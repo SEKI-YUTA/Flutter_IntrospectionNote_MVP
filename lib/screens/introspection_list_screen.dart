@@ -13,7 +13,9 @@ class IntrospectionListPage extends StatelessWidget {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Get.toNamed("/create_introspection");
+        },
         child: const Icon(Icons.add),
       ),
       body: Obx(() {

@@ -5,9 +5,11 @@ import 'package:get/get.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:introspection_note_mvp/binding/create_introspection_screen_binding.dart';
 import 'package:introspection_note_mvp/binding/introspection_screen_binding.dart';
 import 'package:introspection_note_mvp/data/repositories/note_repository.dart';
 import 'package:introspection_note_mvp/controller/introspection_list_screen_controller.dart';
+import 'package:introspection_note_mvp/screens/create_introspection_screen.dart';
 import 'package:introspection_note_mvp/screens/introspection_list_screen.dart';
 
 void main() async {
@@ -38,6 +40,11 @@ class MyApp extends StatelessWidget {
           name: "/introspection_list",
           page: () => IntrospectionListPage(),
           binding: IntrospectionListScreenBinding(),
+        ),
+        GetPage(
+          name: "/create_introspection",
+          page: () => CreateIntrospectionPage(),
+          binding: CreateIntrospectionBinding(),
         ),
       ],
     );
