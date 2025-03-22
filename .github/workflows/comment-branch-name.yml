@@ -3,6 +3,8 @@ name: Comment Branch Name on Issues
 on:
     issues:
         types: [opened]
+    issue_comment:
+        types: [created]
 
 permissions:
     issues: write
@@ -10,8 +12,9 @@ permissions:
 jobs:
     comment-branch-name:
         runs-on: ubuntu-latest
+        if: ${{ github.event_name == 'issues' || contains(github.event.comment.body, ':comment-branch') }}
         steps:
             - name: Comment Branch Name
-              uses: SEKI-YUTA/action-comment-working-branch-name@v1.0.1
+              uses: SEKI-YUTA/action-comment-working-branch-name@v1.0.3
               with:
                   app-name: "IntrospectionNote"
