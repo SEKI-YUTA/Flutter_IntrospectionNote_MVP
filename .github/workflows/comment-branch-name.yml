@@ -1,0 +1,17 @@
+name: Comment Branch Name on Issues
+
+on:
+    issues:
+        types: [opened]
+
+permissions:
+    issues: write
+
+jobs:
+    comment-branch-name:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Comment Branch Name
+              uses: SEKI-YUTA/action-comment-working-branch-name@v1.0.1
+              with:
+                  app-name: "IntrospectionNote"
