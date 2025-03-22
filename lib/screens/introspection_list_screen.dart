@@ -1,59 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:introspection_note_mvp/models/introspection_note.dart';
-import 'package:introspection_note_mvp/repositories/note_repository.dart';
+import 'package:get/get.dart';
+import 'package:introspection_note_mvp/data/models/introspection_note.dart';
+import 'package:introspection_note_mvp/controller/introspection_list_screen_controller.dart';
 import 'package:introspection_note_mvp/widget/introspection_card.dart';
 
-class IntrospectionListPage extends StatefulWidget {
-  const IntrospectionListPage({Key? key}) : super(key: key);
-
-  @override
-  State<IntrospectionListPage> createState() => _IntrospectionListPageState();
-}
-
-class _IntrospectionListPageState extends State<IntrospectionListPage> {
-  int _selectedTabIndex = 0;
-  List<IntrospectionNote> _notes = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _getNotes();
-  }
-
-  Future<void> _getNotes() async {
-    var repository = NoteRepositoryImpl();
-    final notes = await repository.fetchNotes();
-    setState(() {
-      _notes = notes;
-    });
-  }
+class IntrospectionListPage extends StatelessWidget {
+  const IntrospectionListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<IntrospectionListScreenController>();
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: const Icon(Icons.add),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(),
-              const SizedBox(height: 16),
-              const SizedBox(height: 16),
-              Expanded(
-                child:
-                    _selectedTabIndex == 0
-                        ? _buildListView()
-                        : const Center(child: Text('カレンダー表示（実装予定）')),
-              ),
-            ],
+      body: Obx(() {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(),
+                const SizedBox(height: 16),
+                const SizedBox(height: 16),
+                controller.isLoading
+                    ? _buildLoading()
+                    : _buildListView(controller.notes),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 
@@ -73,15 +53,21 @@ class _IntrospectionListPageState extends State<IntrospectionListPage> {
     );
   }
 
-  Widget _buildListView() {
-    return ListView.builder(
-      itemCount: _notes.length,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: IntrospectionCard(note: _notes[index]),
-        );
-      },
+  Widget _buildListView(List<IntrospectionNote> notes) {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: notes.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 16.0),
+            child: IntrospectionCard(note: notes[index]),
+          );
+        },
+      ),
     );
+  }
+
+  Widget _buildLoading() {
+    return const Center(child: CircularProgressIndicator());
   }
 }

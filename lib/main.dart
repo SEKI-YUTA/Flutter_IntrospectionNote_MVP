@@ -1,6 +1,13 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:get/get.dart';
+import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:introspection_note_mvp/binding/introspection_screen_binding.dart';
+import 'package:introspection_note_mvp/data/repositories/note_repository.dart';
+import 'package:introspection_note_mvp/controller/introspection_list_screen_controller.dart';
 import 'package:introspection_note_mvp/screens/introspection_list_screen.dart';
 
 void main() async {
@@ -14,9 +21,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '内省ノート',
-      debugShowCheckedModeBanner: false,
+    return GetMaterialApp(
+      title: "内省ノート",
+      initialRoute: "/introspection_list",
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF0F766E)),
       ),
@@ -26,9 +33,13 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
       ),
-      home: const IntrospectionListPage(),
+      getPages: [
+        GetPage(
+          name: "/introspection_list",
+          page: () => IntrospectionListPage(),
+          binding: IntrospectionListScreenBinding(),
+        ),
+      ],
     );
   }
 }
-
-

@@ -1,5 +1,5 @@
 // サンプルデータ
-import 'package:introspection_note_mvp/models/introspection_note.dart';
+import 'package:introspection_note_mvp/data/models/introspection_note.dart';
 
 final List<IntrospectionNote> notes = [
   IntrospectionNote(

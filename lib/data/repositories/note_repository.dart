@@ -1,5 +1,5 @@
 import 'package:introspection_note_mvp/constant/constant.dart';
-import 'package:introspection_note_mvp/models/introspection_note.dart';
+import 'package:introspection_note_mvp/data/models/introspection_note.dart';
 
 class NoteRepository {
   Future<List<IntrospectionNote>> fetchNotes() async => [];
