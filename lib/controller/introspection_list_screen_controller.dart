@@ -14,12 +14,23 @@ class IntrospectionListScreenController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _getNotes();
+    readNotes();
   }
 
-  Future<void> _getNotes() async {
-    final notes = await repository.fetchNotes();
-    _notes.value = notes;
-    _isLoading.value = false;
+  Future<void> readNotes() async {
+    _isLoading.value = true;
+
+    try {
+      final notes = await repository.fetchNotes();
+      print("readNotes: ${notes.length}");
+
+      _notes.clear();
+      _notes.addAll(notes);
+
+    } catch (e) {
+    } finally {
+      _isLoading.value = false;
+      update(); // 明示的な更新通知
+    }
   }
 }

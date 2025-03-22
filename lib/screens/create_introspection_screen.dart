@@ -9,7 +9,7 @@ class CreateIntrospectionPage
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<CreateInstropectionScreenController>();
-    
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -230,7 +230,7 @@ class CreateIntrospectionPage
                 // 入力フィールド
                 Expanded(
                   child: TextField(
-                    controller: controller.positiveItems[i].controller,
+                    controller: controller.positiveItems[i],
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(12),
                       hintText:
@@ -260,7 +260,7 @@ class CreateIntrospectionPage
                 ),
 
                 // フィールドが空でない場合は削除ボタンを表示
-                if (controller.positiveItems[i].controller.text.isNotEmpty)
+                if (controller.positiveItems[i].text.isNotEmpty)
                   IconButton(
                     icon: const Icon(
                       Icons.delete_outline,
@@ -285,7 +285,7 @@ class CreateIntrospectionPage
               // 入力フィールド
               Expanded(
                 child: TextField(
-                  controller: controller.improvementItems[i].controller,
+                  controller: controller.improvementItems[i],
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(12),
                     border: OutlineInputBorder(

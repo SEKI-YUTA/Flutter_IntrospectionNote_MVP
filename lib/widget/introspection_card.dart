@@ -121,7 +121,7 @@ class IntrospectionCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children:
-                  note.positiveParts
+                  note.positiveItems
                       .map(
                         (item) => Padding(
                           padding: const EdgeInsets.only(bottom: 4),
@@ -172,7 +172,7 @@ class IntrospectionCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children:
-                  note.improvementParts
+                  note.improvementItems
                       .map(
                         (item) => Padding(
                           padding: const EdgeInsets.only(bottom: 4),

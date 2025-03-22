@@ -13,8 +13,12 @@ class IntrospectionListPage extends StatelessWidget {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.toNamed("/create_introspection");
+        onPressed: () async {
+          final result = await Get.toNamed("/create_introspection");
+          if (result != null) {
+            await controller.readNotes();
+            print("added count: ${controller.notes.length}");
+          }
         },
         child: const Icon(Icons.add),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:introspection_note_mvp/data/models/introspection_note.dart';
 import 'package:introspection_note_mvp/data/repositories/note_repository.dart';
 
 class InstropectionItem {
@@ -18,14 +19,12 @@ class CreateInstropectionScreenController extends GetxController {
   final NoteRepository repository;
   CreateInstropectionScreenController({required this.repository});
 
-  // プライベート変数
   final _date = DateTime.now().obs;
-  final _positiveItems = <InstropectionItem>[].obs;
-  final _improvementItems = <InstropectionItem>[].obs;
+  final _positiveTextControllers = <TextEditingController>[].obs;
+  final _improvementTextControllers = <TextEditingController>[].obs;
   final _isSaving = false.obs;
   final _isEditMode = false.obs;
 
-  // コメント用コントローラー
   final commentController = TextEditingController();
 
   // 編集対象のID
@@ -33,8 +32,9 @@ class CreateInstropectionScreenController extends GetxController {
 
   // ゲッター
   DateTime get date => _date.value;
-  List<InstropectionItem> get positiveItems => _positiveItems.toList();
-  List<InstropectionItem> get improvementItems => _improvementItems.toList();
+  List<TextEditingController> get positiveItems => _positiveTextControllers.toList();
+  List<TextEditingController> get improvementItems =>
+      _improvementTextControllers.toList();
   bool get isSaving => _isSaving.value;
   bool get isEditMode => _isEditMode.value;
 
@@ -45,11 +45,9 @@ class CreateInstropectionScreenController extends GetxController {
   }
 
   void _initializeData() {
-    // 初期データをセット
-    _positiveItems.add(InstropectionItem(initialText: ""));
-    _positiveItems.add(InstropectionItem()); // 空の入力フィールド用
+    _positiveTextControllers.add(TextEditingController());
 
-    _improvementItems.add(InstropectionItem(initialText: ""));
+    _improvementTextControllers.add(TextEditingController());
 
     commentController.text = "";
 
@@ -74,20 +72,21 @@ class CreateInstropectionScreenController extends GetxController {
 
     if (reflectionData['positiveItems'] != null &&
         reflectionData['positiveItems'] is List) {
-      _positiveItems.clear();
+      _positiveTextControllers.clear();
       final items = reflectionData['positiveItems'] as List;
+
       for (final item in items) {
-        _positiveItems.add(InstropectionItem(initialText: item.toString()));
+        _positiveTextControllers.add(TextEditingController(text: item.toString()));
       }
-      _positiveItems.add(InstropectionItem()); // 入力用の空フィールドを追加
+      _positiveTextControllers.add(TextEditingController()); // 入力用の空フィールドを追加
     }
 
     if (reflectionData['improvementItems'] != null &&
         reflectionData['improvementItems'] is List) {
-      _improvementItems.clear();
+      _improvementTextControllers.clear();
       final items = reflectionData['improvementItems'] as List;
       for (final item in items) {
-        _improvementItems.add(InstropectionItem(initialText: item.toString()));
+        _improvementTextControllers.add(TextEditingController(text: item.toString()));
       }
     }
 
@@ -99,10 +98,10 @@ class CreateInstropectionScreenController extends GetxController {
   @override
   void onClose() {
     // コントローラーの破棄
-    for (var item in _positiveItems) {
+    for (var item in _positiveTextControllers) {
       item.dispose();
     }
-    for (var item in _improvementItems) {
+    for (var item in _improvementTextControllers) {
       item.dispose();
     }
     commentController.dispose();
@@ -118,29 +117,29 @@ class CreateInstropectionScreenController extends GetxController {
 
   // 良かった点の項目を追加
   void addPositiveItem() {
-    _positiveItems.add(InstropectionItem());
+    _positiveTextControllers.add(TextEditingController());
   }
 
   // 良かった点の項目を削除
   void removePositiveItem(int index) {
-    if (index >= 0 && index < _positiveItems.length) {
-      final item = _positiveItems[index];
+    if (index >= 0 && index < _positiveTextControllers.length) {
+      final item = _positiveTextControllers[index];
       item.dispose();
-      _positiveItems.removeAt(index);
+      _positiveTextControllers.removeAt(index);
     }
   }
 
   // 改善点の項目を追加
   void addImprovementItem() {
-    _improvementItems.add(InstropectionItem());
+    _improvementTextControllers.add(TextEditingController());
   }
 
   // 改善点の項目を削除
   void removeImprovementItem(int index) {
-    if (index >= 0 && index < _improvementItems.length) {
-      final item = _improvementItems[index];
+    if (index >= 0 && index < _improvementTextControllers.length) {
+      final item = _improvementTextControllers[index];
       item.dispose();
-      _improvementItems.removeAt(index);
+      _improvementTextControllers.removeAt(index);
     }
   }
 
@@ -151,41 +150,46 @@ class CreateInstropectionScreenController extends GetxController {
 
       // 空でない項目のテキストを取得
       final positiveTexts =
-          _positiveItems
-              .map((item) => item.controller.text)
+          _positiveTextControllers
+              .map((item) => item.text)
               .where((text) => text.isNotEmpty)
               .toList();
 
       final improvementTexts =
-          _improvementItems
-              .map((item) => item.controller.text)
+          _improvementTextControllers
+              .map((item) => item.text)
               .where((text) => text.isNotEmpty)
               .toList();
 
       final comment = commentController.text;
 
       // 保存データの作成
-      final reflectionData = {
+      final introspectionData = {
         'date': _date.value,
         'positiveItems': positiveTexts,
         'improvementItems': improvementTexts,
-        'comment': comment,
+        'dailyComment': comment,
       };
 
       // 編集モードの場合はIDも追加
       if (_isEditMode.value && editId != null) {
-        reflectionData['id'] = editId!;
+        introspectionData['id'] = editId!;
       }
 
-      // ここで実際のデータ保存処理を行う
-      // 例: isEditMode.value
-      //     ? await repository.updateReflection(reflectionData)
-      //     : await repository.createReflection(reflectionData);
+      // print(introspectionData['date'] is DateTime);
+
+      if (introspectionData['date'] is DateTime) {
+        introspectionData['date'] =
+            (introspectionData['date'] as DateTime).toIso8601String();
+      }
+
+      final note = IntrospectionNote.fromJson(introspectionData);
+      isEditMode ? await repository.update(note) : await repository.add(note);
 
       // 保存成功後の処理
       await Future.delayed(const Duration(milliseconds: 500)); // 保存処理のシミュレーション
 
-      Get.back(result: reflectionData); // 結果を返しながら前の画面に戻る
+      Get.back(result: note); // 結果を返しながら前の画面に戻る
       Get.snackbar(
         _isEditMode.value ? '更新完了' : '保存完了',
         _isEditMode.value ? '内省を更新しました' : '内省を保存しました',

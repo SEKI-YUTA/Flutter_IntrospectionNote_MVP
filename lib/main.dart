@@ -8,13 +8,13 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:introspection_note_mvp/binding/create_introspection_screen_binding.dart';
 import 'package:introspection_note_mvp/binding/introspection_screen_binding.dart';
 import 'package:introspection_note_mvp/data/repositories/note_repository.dart';
-import 'package:introspection_note_mvp/controller/introspection_list_screen_controller.dart';
 import 'package:introspection_note_mvp/screens/create_introspection_screen.dart';
 import 'package:introspection_note_mvp/screens/introspection_list_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('ja_JP');
+  Get.put<NoteRepository>(NoteRepositoryImpl());
   runApp(const MyApp());
 }
 
