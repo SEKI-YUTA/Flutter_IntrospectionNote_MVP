@@ -1,122 +1,221 @@
 import 'package:flutter/material.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tz_data;
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-void main() {
+// グローバル変数としてプラグインのインスタンスを作成
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+void main() async {
+  // プラグインの初期化が完了するまでWidgetのバインディングを確保
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // タイムゾーンの初期化
+  tz_data.initializeTimeZones();
+
+  // 通知の初期化
+  await initNotifications();
+
   runApp(const MyApp());
+}
+
+// 通知の初期化処理
+Future<void> initNotifications() async {
+  // Androidの初期設定
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher'); // アプリのアイコンを使用
+
+  // iOSの初期設定
+  final DarwinInitializationSettings initializationSettingsIOS =
+      DarwinInitializationSettings(
+        requestAlertPermission: true, // アラート許可を要求
+        requestBadgePermission: true, // バッジ許可を要求
+        requestSoundPermission: true, // サウンド許可を要求
+      );
+
+  // 初期化設定を作成
+  final InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+    iOS: initializationSettingsIOS,
+  );
+
+  // プラグインの初期化
+  await flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+    onDidReceiveNotificationResponse: (
+      NotificationResponse notificationResponse,
+    ) {
+      // 通知がタップされたときの処理
+      debugPrint('通知がタップされました: ${notificationResponse.payload}');
+      // ここで特定の画面に遷移させるなどの処理を行うことができます
+    },
+  );
+
+  // Android 13以降のために必要な通知許可の要求
+  await requestNotificationPermissions();
+}
+
+// 通知許可を要求する関数
+Future<void> requestNotificationPermissions() async {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin
+      >()
+      ?.requestNotificationsPermission();
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      title: '通知サンプル',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: const NotificationScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+class NotificationScreen extends StatelessWidget {
+  const NotificationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(title: const Text('通知サンプル')),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+          children: [
+            ElevatedButton(
+              onPressed: () => showBasicNotification(),
+              child: const Text('基本的な通知を表示'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => showScheduledNotification(),
+              child: const Text('予定された通知を表示 (5秒後)'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => showBigPictureNotification(),
+              child: const Text('画像付き通知を表示 (Androidのみ)'),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  // 基本的な通知を表示
+  Future<void> showBasicNotification() async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+          'basic_channel', // チャンネルID
+          'Basic Notifications', // チャンネル名
+          channelDescription: '基本的な通知のチャンネルです', // チャンネルの説明
+          importance: Importance.max,
+          priority: Priority.high,
+          showWhen: true,
+        );
+
+    const DarwinNotificationDetails iOSPlatformChannelSpecifics =
+        DarwinNotificationDetails();
+
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+      0, // 通知ID (同じIDの通知は上書きされる)
+      '基本通知', // 通知のタイトル
+      'これは基本的な通知メッセージです', // 通知の内容
+      platformChannelSpecifics,
+      payload: 'basic_notification', // タップしたときに使用できるデータ
+    );
+  }
+
+  // スケジュールされた通知を表示
+  Future<void> showScheduledNotification() async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+          'scheduled_channel',
+          'Scheduled Notifications',
+          channelDescription: '予定された通知のチャンネルです',
+          importance: Importance.max,
+          priority: Priority.high,
+        );
+
+    const DarwinNotificationDetails iOSPlatformChannelSpecifics =
+        DarwinNotificationDetails();
+
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
+
+    // 現在時刻から5秒後に通知をスケジュール
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      0,
+      '予定された通知',
+      '指定時間に表示される通知です',
+      tz.TZDateTime.now(tz.local).add(const Duration(seconds: 10)),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'schedule_channel',
+          'スケジュール通知',
+          channelDescription: 'スケジュールされた通知のチャンネルです',
+        ),
+        iOS: DarwinNotificationDetails(),
+      ),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+    );
+  }
+
+  // 画像付き通知を表示 (Androidのみ)
+  Future<void> showBigPictureNotification() async {
+    // Androidのみ対応する機能
+    final BigPictureStyleInformation bigPictureStyleInformation =
+        BigPictureStyleInformation(
+          const DrawableResourceAndroidBitmap(
+            '@mipmap/ic_launcher',
+          ), // アプリのアイコンを使用
+          largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
+          contentTitle: '拡張通知のタイトル',
+          summaryText: '通知の概要テキスト',
+          htmlFormatContent: true,
+          htmlFormatContentTitle: true,
+        );
+
+    final AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+          'big_picture_channel',
+          'Big Picture Notifications',
+          channelDescription: '画像付き通知のチャンネルです',
+          importance: Importance.max,
+          priority: Priority.high,
+          styleInformation: bigPictureStyleInformation,
+        );
+
+    const DarwinNotificationDetails iOSPlatformChannelSpecifics =
+        DarwinNotificationDetails();
+
+    final NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+      2, // 通知ID
+      '画像付き通知',
+      'これは画像付きの通知です (Androidのみ)',
+      platformChannelSpecifics,
+      payload: 'big_picture_notification',
     );
   }
 }
