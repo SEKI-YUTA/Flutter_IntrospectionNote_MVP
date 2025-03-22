@@ -8,8 +8,10 @@ class IntrospectionListScreenController extends GetxController {
 
   final _notes = <IntrospectionNote>[].obs;
   final _isLoading = true.obs;
+  final _viewMode = ViewMode.List.obs;
   List<IntrospectionNote> get notes => _notes.toList();
   bool get isLoading => _isLoading.value;
+  ViewMode get viewMode => _viewMode.value;
 
   @override
   void onInit() {
@@ -33,4 +35,13 @@ class IntrospectionListScreenController extends GetxController {
       update(); // 明示的な更新通知
     }
   }
+
+  void changeViewMode(ViewMode mode) {
+    _viewMode.value = mode;
+  }
+}
+
+enum ViewMode {
+  List,
+  Calendar
 }

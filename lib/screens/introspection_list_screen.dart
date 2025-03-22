@@ -31,10 +31,12 @@ class IntrospectionListPage extends StatelessWidget {
               children: [
                 _buildHeader(),
                 const SizedBox(height: 16),
-                const SizedBox(height: 16),
+                _buildSwitchViewMode(controller),
                 controller.isLoading
                     ? _buildLoading()
-                    : _buildListView(controller.notes),
+                    : controller.viewMode == ViewMode.List
+                    ? _buildListView(controller.notes)
+                    : _buildCalendarVIew(),
               ],
             ),
           ),
@@ -59,6 +61,28 @@ class IntrospectionListPage extends StatelessWidget {
     );
   }
 
+  Widget _buildSwitchViewMode(IntrospectionListScreenController controller) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        IconButton(
+          onPressed: () {
+            controller.changeViewMode(
+              controller.viewMode == ViewMode.List
+                  ? ViewMode.Calendar
+                  : ViewMode.List,
+            );
+          },
+          icon: Icon(
+            controller.viewMode == ViewMode.List
+                ? Icons.list
+                : Icons.calendar_today,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildListView(List<IntrospectionNote> notes) {
     return Expanded(
       child: ListView.builder(
@@ -71,6 +95,10 @@ class IntrospectionListPage extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Widget _buildCalendarVIew() {
+    return const Center(child: Text('カレンダービュー\nComming soon...'));
   }
 
   Widget _buildLoading() {
