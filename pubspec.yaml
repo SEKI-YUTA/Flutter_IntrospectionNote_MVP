@@ -41,6 +41,7 @@ dependencies:
     # firebase_ui_auth: ^1.16.1
     # firebase_core: ^3.12.1
     timezone: ^0.10.0
+    intl: ^0.20.2
 
 dev_dependencies:
     flutter_test:
