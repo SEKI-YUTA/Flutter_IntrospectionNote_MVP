@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:introspection_note_mvp/controller/create_instropection_screen_controller.dart';
+import 'package:introspection_note_mvp/util/util.dart';
 
 class CreateIntrospectionPage
     extends GetView<CreateInstropectionScreenController> {
@@ -9,9 +10,8 @@ class CreateIntrospectionPage
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<CreateInstropectionScreenController>();
-
+    bool _isDarkTheme = isDarkTheme(context);
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: Obx(() {
           return Stack(
@@ -23,7 +23,7 @@ class CreateIntrospectionPage
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // ヘッダー
-                    _buildHeader(),
+                    _buildHeader(_isDarkTheme),
                     const SizedBox(height: 16),
 
                     // フォームカード
@@ -33,7 +33,7 @@ class CreateIntrospectionPage
                         side: const BorderSide(color: Color(0xFFE4E4E7)),
                       ),
                       elevation: 1,
-                      shadowColor: Colors.black.withOpacity(0.05),
+                      shadowColor: Colors.black.withValues(alpha: 0.1),
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
@@ -131,7 +131,6 @@ class CreateIntrospectionPage
                               style: const TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 14,
-                                color: Color(0xFF09090B),
                               ),
                               minLines: 3,
                               maxLines: 5,
@@ -193,12 +192,15 @@ class CreateIntrospectionPage
   }
 
   // ヘッダーウィジェットの構築
-  Widget _buildHeader() {
+  Widget _buildHeader(bool isDarkTheme) {
     return Row(
       children: [
         // 戻るボタン
         IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(
+            Icons.arrow_back,
+            color: isDarkTheme ? Colors.white : Colors.black,
+          ),
           onPressed: () {
             Get.back();
           },
@@ -207,7 +209,7 @@ class CreateIntrospectionPage
         // タイトル
         Text(
           controller.isEditMode ? "内省の編集" : "内省の記録",
-          style: const TextStyle(
+          style: TextStyle(
             fontFamily: 'Inter',
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -251,11 +253,7 @@ class CreateIntrospectionPage
                         borderSide: const BorderSide(color: Color(0xFF047857)),
                       ),
                     ),
-                    style: const TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 14,
-                      color: Color(0xFF09090B),
-                    ),
+                    style: const TextStyle(fontFamily: 'Inter', fontSize: 14),
                   ),
                 ),
 
@@ -297,11 +295,7 @@ class CreateIntrospectionPage
                       borderSide: const BorderSide(color: Color(0xFFB45309)),
                     ),
                   ),
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 14,
-                    color: Color(0xFF09090B),
-                  ),
+                  style: const TextStyle(fontFamily: 'Inter', fontSize: 14),
                 ),
               ),
 
