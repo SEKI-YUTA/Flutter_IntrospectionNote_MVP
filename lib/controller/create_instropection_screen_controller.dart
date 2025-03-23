@@ -171,6 +171,20 @@ class CreateInstropectionScreenController extends GetxController {
 
       final comment = commentController.text;
 
+      if (positiveTexts.isEmpty ||
+          improvementTexts.isEmpty ||
+          comment.isEmpty) {
+        Get.snackbar(
+          'エラー',
+          '良かった点、改善点、コメントのすべてを入力してください',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: const EdgeInsets.all(16),
+        );
+        return;
+      }
+
       // 保存データの作成
       final introspectionData = {
         'date': _date.value,
