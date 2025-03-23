@@ -1,4 +1,3 @@
-// サンプルデータ
 import 'package:introspection_note_mvp/data/models/introspection_note.dart';
 import 'package:uuid/uuid.dart';
 

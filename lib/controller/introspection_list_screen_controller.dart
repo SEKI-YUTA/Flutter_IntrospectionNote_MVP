@@ -34,7 +34,7 @@ class IntrospectionListScreenController extends GetxController {
       e.printError();
     } finally {
       _isLoading.value = false;
-      update(); // 明示的な更新通知
+      update();
     }
   }
 
@@ -66,7 +66,7 @@ class IntrospectionListScreenController extends GetxController {
           ),
         ],
       ),
-      barrierDismissible: false, // ダイアログ外をタップしても閉じない
+      barrierDismissible: false,
     );
   }
 

@@ -16,17 +16,14 @@ class CreateIntrospectionPage
         child: Obx(() {
           return Stack(
             children: [
-              // メインコンテンツ
               SingleChildScrollView(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ヘッダー
                     _buildHeader(_isDarkTheme),
                     const SizedBox(height: 16),
 
-                    // フォームカード
                     Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -39,7 +36,6 @@ class CreateIntrospectionPage
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // 日付
                             Text(
                               controller.getFormattedDate(),
                               style: const TextStyle(
@@ -52,7 +48,6 @@ class CreateIntrospectionPage
                             ),
                             const SizedBox(height: 24),
 
-                            // 良かった点セクション
                             const Text(
                               "良かった点",
                               style: TextStyle(
@@ -64,10 +59,8 @@ class CreateIntrospectionPage
                             ),
                             const SizedBox(height: 8),
 
-                            // 良かった点入力フィールドのリスト
                             _buildPositiveFields(),
 
-                            // 良かった点の項目追加ボタン
                             _buildAddItemButton(
                               onPressed: controller.addPositiveItem,
                               labelText: "項目を追加",
@@ -75,7 +68,6 @@ class CreateIntrospectionPage
                             ),
                             const SizedBox(height: 24),
 
-                            // 改善点セクション
                             const Text(
                               "改善点",
                               style: TextStyle(
@@ -87,10 +79,8 @@ class CreateIntrospectionPage
                             ),
                             const SizedBox(height: 8),
 
-                            // 改善点入力フィールドのリスト
                             _buildImprovementFields(),
 
-                            // 改善点の項目追加ボタン
                             _buildAddItemButton(
                               onPressed: controller.addImprovementItem,
                               labelText: "項目を追加",
@@ -98,7 +88,6 @@ class CreateIntrospectionPage
                             ),
                             const SizedBox(height: 24),
 
-                            // 1日の感想セクション
                             const Text(
                               "1日の感想",
                               style: TextStyle(
@@ -110,7 +99,6 @@ class CreateIntrospectionPage
                             ),
                             const SizedBox(height: 8),
 
-                            // 感想入力エリア
                             TextField(
                               controller: controller.commentController,
                               decoration: InputDecoration(
@@ -137,13 +125,12 @@ class CreateIntrospectionPage
                             ),
                             const SizedBox(height: 24),
 
-                            // 保存ボタン
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
                                 onPressed:
                                     controller.isSaving
-                                        ? null // 保存中は押せないように
+                                        ? null
                                         : controller.saveReflection,
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFF0D9488),
@@ -176,7 +163,6 @@ class CreateIntrospectionPage
                 ),
               ),
 
-              // 保存中のローディングインジケーター
               if (controller.isSaving)
                 Container(
                   color: Colors.black.withOpacity(0.3),
@@ -191,11 +177,9 @@ class CreateIntrospectionPage
     );
   }
 
-  // ヘッダーウィジェットの構築
   Widget _buildHeader(bool isDarkTheme) {
     return Row(
       children: [
-        // 戻るボタン
         IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -206,7 +190,7 @@ class CreateIntrospectionPage
           },
         ),
         const SizedBox(width: 8),
-        // タイトル
+
         Text(
           controller.isEditMode ? "内省の編集" : "内省の記録",
           style: TextStyle(
@@ -220,7 +204,6 @@ class CreateIntrospectionPage
     );
   }
 
-  // 良かった点の入力フィールドリストを構築
   Widget _buildPositiveFields() {
     return Column(
       children: List.generate(controller.positiveItems.length, (i) {
@@ -228,7 +211,6 @@ class CreateIntrospectionPage
           padding: const EdgeInsets.only(bottom: 8),
           child: Row(
             children: [
-              // 入力フィールド
               Expanded(
                 child: TextField(
                   controller: controller.positiveItems[i],
@@ -274,7 +256,6 @@ class CreateIntrospectionPage
           padding: const EdgeInsets.only(bottom: 8),
           child: Row(
             children: [
-              // 入力フィールド
               Expanded(
                 child: TextField(
                   controller: controller.improvementItems[i],
@@ -307,7 +288,6 @@ class CreateIntrospectionPage
     );
   }
 
-  // 項目追加ボタンを構築
   Widget _buildAddItemButton({
     required VoidCallback onPressed,
     required String labelText,

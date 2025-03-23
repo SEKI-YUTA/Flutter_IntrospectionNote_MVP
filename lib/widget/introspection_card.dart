@@ -19,7 +19,6 @@ class IntrospectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 日付をフォーマット（例：2025年03月20日（木））
     final dateFormat = DateFormat('yyyy年MM月dd日', 'ja_JP');
     final weekdayFormat = DateFormat('（E）', 'ja_JP');
     final formattedDate =
@@ -42,7 +41,6 @@ class IntrospectionCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ヘッダー部分（日付と操作ボタン）
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
@@ -107,7 +105,6 @@ class IntrospectionCard extends StatelessWidget {
             ),
           ),
 
-          // 良かった点
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
             child: Row(
@@ -130,7 +127,6 @@ class IntrospectionCard extends StatelessWidget {
             ),
           ),
 
-          // 良かった点のリスト
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
@@ -158,7 +154,6 @@ class IntrospectionCard extends StatelessWidget {
             ),
           ),
 
-          // 改善点
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             child: Row(
@@ -181,7 +176,6 @@ class IntrospectionCard extends StatelessWidget {
             ),
           ),
 
-          // 改善点のリスト
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
@@ -209,7 +203,6 @@ class IntrospectionCard extends StatelessWidget {
             ),
           ),
 
-          // 1日の感想
           const Padding(
             padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
             child: Text(
@@ -222,7 +215,6 @@ class IntrospectionCard extends StatelessWidget {
             ),
           ),
 
-          // 感想内容
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             child: Text(
