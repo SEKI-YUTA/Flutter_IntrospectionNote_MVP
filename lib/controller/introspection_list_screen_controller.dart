@@ -51,7 +51,7 @@ class IntrospectionListScreenController extends GetxController {
               _manipulatingNote.value = note;
               try {
                 final request = repository.delete(note);
-                Get.back();
+                Get.back(closeOverlays: true);
                 await request;
                 _notes.remove(note);
                 Get.snackbar("完了", "項目が削除されました");
