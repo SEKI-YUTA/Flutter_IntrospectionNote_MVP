@@ -253,14 +253,13 @@ class CreateIntrospectionPage
                 ),
               ),
 
-              if (i > 0)
-                IconButton(
-                  icon: const Icon(
-                    Icons.delete_outline,
-                    color: Color(0xFFEF4444),
-                  ),
-                  onPressed: () => controller.removePositiveItem(i),
+              IconButton(
+                icon: const Icon(
+                  Icons.delete_outline,
+                  color: Color(0xFFEF4444),
                 ),
+                onPressed: () => controller.removePositiveItem(i),
+              ),
             ],
           ),
         );
@@ -294,15 +293,13 @@ class CreateIntrospectionPage
                 ),
               ),
 
-              // 2つ目以降の項目には削除ボタンを表示（必要に応じて）
-              if (i > 0)
-                IconButton(
-                  icon: const Icon(
-                    Icons.delete_outline,
-                    color: Color(0xFFEF4444),
-                  ),
-                  onPressed: () => controller.removeImprovementItem(i),
+              IconButton(
+                icon: const Icon(
+                  Icons.delete_outline,
+                  color: Color(0xFFEF4444),
                 ),
+                onPressed: () => controller.removeImprovementItem(i),
+              ),
             ],
           ),
         );
