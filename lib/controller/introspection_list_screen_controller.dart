@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:introspection_note_mvp/data/models/introspection_note.dart';
 import 'package:introspection_note_mvp/data/repositories/note_repository.dart';
@@ -9,9 +10,11 @@ class IntrospectionListScreenController extends GetxController {
   final _notes = <IntrospectionNote>[].obs;
   final _isLoading = true.obs;
   final _viewMode = ViewMode.List.obs;
+  final Rx<IntrospectionNote?> _manipulatingNote = Rx<IntrospectionNote?>(null);
   List<IntrospectionNote> get notes => _notes.toList();
   bool get isLoading => _isLoading.value;
   ViewMode get viewMode => _viewMode.value;
+  IntrospectionNote? get manipulatingNote => _manipulatingNote.value;
 
   @override
   void onInit() {
@@ -36,14 +39,35 @@ class IntrospectionListScreenController extends GetxController {
   }
 
   Future<void> delete(IntrospectionNote note) async {
-    try {
-      await repository.delete(note);
-      _notes.remove(note);
-    } catch (e) {
-      e.printError();
-    } finally {
-      update();
-    }
+    Get.dialog(
+      AlertDialog(
+        title: Text("確認"),
+        content: Text("本当に削除してもよろしいですか？"),
+        actions: [
+          TextButton(child: Text("キャンセル"), onPressed: () => Get.back()),
+          TextButton(
+            child: Text("削除"),
+            onPressed: () async {
+              _manipulatingNote.value = note;
+              try {
+                final request = repository.delete(note);
+                Get.back();
+                await request;
+                _notes.remove(note);
+                Get.snackbar("完了", "項目が削除されました");
+              } catch (e) {
+                e.printError();
+                Get.snackbar("エラー", "削除に失敗しました");
+              } finally {
+                update();
+              }
+              _manipulatingNote.value = null;
+            },
+          ),
+        ],
+      ),
+      barrierDismissible: false, // ダイアログ外をタップしても閉じない
+    );
   }
 
   void changeViewMode(ViewMode mode) {

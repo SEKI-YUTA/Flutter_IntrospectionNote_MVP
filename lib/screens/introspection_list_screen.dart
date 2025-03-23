@@ -36,6 +36,7 @@ class IntrospectionListPage extends StatelessWidget {
                     : controller.viewMode == ViewMode.List
                     ? _buildListView(
                       controller.notes,
+                      controller.manipulatingNote,
                       (IntrospectionNote note) async {
                         var mapData = note.toJson();
                         final result = await Get.toNamed(
@@ -99,6 +100,7 @@ class IntrospectionListPage extends StatelessWidget {
 
   Widget _buildListView(
     List<IntrospectionNote> notes,
+    IntrospectionNote? manipulatingNote,
     Function(IntrospectionNote note) onEdit,
     Function(IntrospectionNote note) onDelete,
   ) {
@@ -111,6 +113,7 @@ class IntrospectionListPage extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 16.0),
             child: IntrospectionCard(
               note: note,
+              allowManipulation: manipulatingNote != note,
               onEdit: () => onEdit(note),
               onDelete: () => onDelete(note),
             ),

@@ -5,12 +5,14 @@ import 'package:introspection_note_mvp/util/util.dart';
 
 class IntrospectionCard extends StatelessWidget {
   final IntrospectionNote note;
-  final VoidCallback? onEdit;
-  final VoidCallback? onDelete;
+  final bool allowManipulation;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
 
   const IntrospectionCard({
     super.key,
     required this.note,
+    this.allowManipulation = true,
     required this.onEdit,
     required this.onDelete,
   });
@@ -75,7 +77,12 @@ class IntrospectionCard extends StatelessWidget {
                         Icons.edit_outlined,
                         color: Color(0xFF0D9488),
                       ),
-                      onPressed: onEdit,
+                      onPressed: () {
+                        if (!allowManipulation) {
+                          return;
+                        }
+                        onEdit();
+                      },
                       constraints: const BoxConstraints(),
                       padding: const EdgeInsets.all(8),
                     ),
@@ -85,7 +92,12 @@ class IntrospectionCard extends StatelessWidget {
                         Icons.delete_outline,
                         color: Color(0xFFEF4444),
                       ),
-                      onPressed: onDelete,
+                      onPressed: () {
+                        if (!allowManipulation) {
+                          return;
+                        }
+                        onDelete();
+                      },
                       constraints: const BoxConstraints(),
                       padding: const EdgeInsets.all(8),
                     ),
