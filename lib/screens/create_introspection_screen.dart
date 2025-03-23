@@ -223,53 +223,48 @@ class CreateIntrospectionPage
   // 良かった点の入力フィールドリストを構築
   Widget _buildPositiveFields() {
     return Column(
-      children: [
-        for (int i = 0; i < controller.positiveItems.length; i++)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Row(
-              children: [
-                // 入力フィールド
-                Expanded(
-                  child: TextField(
-                    controller: controller.positiveItems[i],
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.all(12),
-                      hintText:
-                          i == controller.positiveItems.length - 1
-                              ? "良かったことを入力"
-                              : null,
-                      hintStyle: const TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 14,
-                        color: Color(0xFF71717A),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(6),
-                        borderSide: const BorderSide(color: Color(0xFFE4E4E7)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(6),
-                        borderSide: const BorderSide(color: Color(0xFF047857)),
-                      ),
+      children: List.generate(controller.positiveItems.length, (i) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Row(
+            children: [
+              // 入力フィールド
+              Expanded(
+                child: TextField(
+                  controller: controller.positiveItems[i],
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(12),
+                    hintText: "良かったことを入力",
+                    hintStyle: const TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 14,
+                      color: Color(0xFF71717A),
                     ),
-                    style: const TextStyle(fontFamily: 'Inter', fontSize: 14),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6),
+                      borderSide: const BorderSide(color: Color(0xFFE4E4E7)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6),
+                      borderSide: const BorderSide(color: Color(0xFF047857)),
+                    ),
                   ),
+                  style: const TextStyle(fontFamily: 'Inter', fontSize: 14),
                 ),
+              ),
 
-                // フィールドが空でない場合は削除ボタンを表示
-                if (controller.positiveItems[i].text.isNotEmpty)
-                  IconButton(
-                    icon: const Icon(
-                      Icons.delete_outline,
-                      color: Color(0xFFEF4444),
-                    ),
-                    onPressed: () => controller.removePositiveItem(i),
+              if (i > 0)
+                IconButton(
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: Color(0xFFEF4444),
                   ),
-              ],
-            ),
+                  onPressed: () => controller.removePositiveItem(i),
+                ),
+            ],
           ),
-      ],
+        );
+      }),
     );
   }
 
@@ -299,20 +294,8 @@ class CreateIntrospectionPage
                 ),
               ),
 
-              // 最初の項目のみ、Figmaデザインに合わせて半透明の削除ボタンを表示
-              if (i == 0)
-                Opacity(
-                  opacity: 0.5,
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.delete_outline,
-                      color: Color(0xFFEF4444),
-                    ),
-                    onPressed: null, // 無効化
-                  ),
-                )
               // 2つ目以降の項目には削除ボタンを表示（必要に応じて）
-              else if (i > 0)
+              if (i > 0)
                 IconButton(
                   icon: const Icon(
                     Icons.delete_outline,
