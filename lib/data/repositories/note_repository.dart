@@ -15,17 +15,22 @@ class NoteRepositoryImpl extends NoteRepository {
     return notes;
   }
 
+  @override
   Future<void> add(IntrospectionNote note) async {
     await Future.delayed(const Duration(seconds: 1));
     notes.add(note);
   }
 
+  @override
   Future<void> update(IntrospectionNote note) async {
+    print("update: ${note}");
     await Future.delayed(const Duration(seconds: 1));
     final index = notes.indexWhere((element) => element.id == note.id);
+    print("index: $index");
     notes[index] = note;
   }
 
+  @override
   Future<void> delete(IntrospectionNote note) async {
     await Future.delayed(const Duration(seconds: 1));
     notes.removeWhere((element) => element.id == note.id);

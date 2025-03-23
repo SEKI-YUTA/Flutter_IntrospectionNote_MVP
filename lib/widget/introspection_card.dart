@@ -5,8 +5,15 @@ import 'package:introspection_note_mvp/util/util.dart';
 
 class IntrospectionCard extends StatelessWidget {
   final IntrospectionNote note;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
 
-  const IntrospectionCard({super.key, required this.note});
+  const IntrospectionCard({
+    super.key,
+    required this.note,
+    required this.onEdit,
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +75,7 @@ class IntrospectionCard extends StatelessWidget {
                         Icons.edit_outlined,
                         color: Color(0xFF0D9488),
                       ),
-                      onPressed: () {
-                        // 編集ボタンの処理
-                      },
+                      onPressed: onEdit,
                       constraints: const BoxConstraints(),
                       padding: const EdgeInsets.all(8),
                     ),
@@ -80,9 +85,7 @@ class IntrospectionCard extends StatelessWidget {
                         Icons.delete_outline,
                         color: Color(0xFFEF4444),
                       ),
-                      onPressed: () {
-                        // 削除ボタンの処理
-                      },
+                      onPressed: onDelete,
                       constraints: const BoxConstraints(),
                       padding: const EdgeInsets.all(8),
                     ),

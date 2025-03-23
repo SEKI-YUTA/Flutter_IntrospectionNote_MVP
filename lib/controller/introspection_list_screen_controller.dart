@@ -21,18 +21,28 @@ class IntrospectionListScreenController extends GetxController {
 
   Future<void> readNotes() async {
     _isLoading.value = true;
-
     try {
       final notes = await repository.fetchNotes();
       print("readNotes: ${notes.length}");
 
       _notes.clear();
       _notes.addAll(notes);
-
     } catch (e) {
+      e.printError();
     } finally {
       _isLoading.value = false;
       update(); // 明示的な更新通知
+    }
+  }
+
+  Future<void> delete(IntrospectionNote note) async {
+    try {
+      await repository.delete(note);
+      _notes.remove(note);
+    } catch (e) {
+      e.printError();
+    } finally {
+      update();
     }
   }
 
@@ -41,7 +51,4 @@ class IntrospectionListScreenController extends GetxController {
   }
 }
 
-enum ViewMode {
-  List,
-  Calendar
-}
+enum ViewMode { List, Calendar }

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:introspection_note_mvp/data/models/introspection_note.dart';
 import 'package:introspection_note_mvp/data/repositories/note_repository.dart';
+import 'package:uuid/uuid.dart';
 
 class InstropectionItem {
   final TextEditingController controller;
@@ -32,7 +33,8 @@ class CreateInstropectionScreenController extends GetxController {
 
   // ゲッター
   DateTime get date => _date.value;
-  List<TextEditingController> get positiveItems => _positiveTextControllers.toList();
+  List<TextEditingController> get positiveItems =>
+      _positiveTextControllers.toList();
   List<TextEditingController> get improvementItems =>
       _improvementTextControllers.toList();
   bool get isSaving => _isSaving.value;
@@ -53,45 +55,51 @@ class CreateInstropectionScreenController extends GetxController {
 
     // 引数からデータを取得
     if (Get.arguments != null && Get.arguments is Map) {
+      print("Get.arguments: ${Get.arguments}");
       final args = Get.arguments as Map;
-      if (args.containsKey('instropection')) {
-        _setupEditMode(args['instropection']);
+      if (args.containsKey('introspection')) {
+        _setupEditMode(args['introspection']);
       }
     }
   }
 
   // 編集モードの設定
-  void _setupEditMode(dynamic reflectionData) {
+  void _setupEditMode(dynamic introspectionData) {
     _isEditMode.value = true;
-    editId = reflectionData['id'];
+    editId = introspectionData['id'];
 
     // 既存データで上書き
-    if (reflectionData['date'] != null) {
-      _date.value = reflectionData['date'];
+    if (introspectionData['date'] != null &&
+        introspectionData['date'] is String) {
+      final value = DateTime.parse(introspectionData['date'] as String);
+      _date.value = value;
     }
 
-    if (reflectionData['positiveItems'] != null &&
-        reflectionData['positiveItems'] is List) {
+    if (introspectionData['positiveItems'] != null &&
+        introspectionData['positiveItems'] is List) {
       _positiveTextControllers.clear();
-      final items = reflectionData['positiveItems'] as List;
+      final items = introspectionData['positiveItems'] as List;
 
       for (final item in items) {
-        _positiveTextControllers.add(TextEditingController(text: item.toString()));
+        _positiveTextControllers.add(
+          TextEditingController(text: item.toString()),
+        );
       }
-      _positiveTextControllers.add(TextEditingController()); // 入力用の空フィールドを追加
     }
 
-    if (reflectionData['improvementItems'] != null &&
-        reflectionData['improvementItems'] is List) {
+    if (introspectionData['improvementItems'] != null &&
+        introspectionData['improvementItems'] is List) {
       _improvementTextControllers.clear();
-      final items = reflectionData['improvementItems'] as List;
+      final items = introspectionData['improvementItems'] as List;
       for (final item in items) {
-        _improvementTextControllers.add(TextEditingController(text: item.toString()));
+        _improvementTextControllers.add(
+          TextEditingController(text: item.toString()),
+        );
       }
     }
 
-    if (reflectionData['comment'] != null) {
-      commentController.text = reflectionData['comment'].toString();
+    if (introspectionData['dailyComment'] != null) {
+      commentController.text = introspectionData['dailyComment'].toString();
     }
   }
 
@@ -174,9 +182,9 @@ class CreateInstropectionScreenController extends GetxController {
       // 編集モードの場合はIDも追加
       if (_isEditMode.value && editId != null) {
         introspectionData['id'] = editId!;
+      } else {
+        introspectionData['id'] = Uuid().v6();
       }
-
-      // print(introspectionData['date'] is DateTime);
 
       if (introspectionData['date'] is DateTime) {
         introspectionData['date'] =
@@ -185,9 +193,6 @@ class CreateInstropectionScreenController extends GetxController {
 
       final note = IntrospectionNote.fromJson(introspectionData);
       isEditMode ? await repository.update(note) : await repository.add(note);
-
-      // 保存成功後の処理
-      await Future.delayed(const Duration(milliseconds: 500)); // 保存処理のシミュレーション
 
       Get.back(result: note); // 結果を返しながら前の画面に戻る
       Get.snackbar(

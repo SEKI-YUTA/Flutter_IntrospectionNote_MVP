@@ -17,7 +17,6 @@ class IntrospectionListPage extends StatelessWidget {
           final result = await Get.toNamed("/create_introspection");
           if (result != null) {
             await controller.readNotes();
-            print("added count: ${controller.notes.length}");
           }
         },
         child: const Icon(Icons.add),
@@ -35,7 +34,22 @@ class IntrospectionListPage extends StatelessWidget {
                 controller.isLoading
                     ? _buildLoading()
                     : controller.viewMode == ViewMode.List
-                    ? _buildListView(controller.notes)
+                    ? _buildListView(
+                      controller.notes,
+                      (IntrospectionNote note) async {
+                        var mapData = note.toJson();
+                        final result = await Get.toNamed(
+                          "/create_introspection",
+                          arguments: {'introspection': mapData},
+                        );
+                        if (result != null) {
+                          await controller.readNotes();
+                        }
+                      },
+                      (IntrospectionNote note) {
+                        controller.delete(note);
+                      },
+                    )
                     : _buildCalendarVIew(),
               ],
             ),
@@ -83,14 +97,23 @@ class IntrospectionListPage extends StatelessWidget {
     );
   }
 
-  Widget _buildListView(List<IntrospectionNote> notes) {
+  Widget _buildListView(
+    List<IntrospectionNote> notes,
+    Function(IntrospectionNote note) onEdit,
+    Function(IntrospectionNote note) onDelete,
+  ) {
     return Expanded(
       child: ListView.builder(
         itemCount: notes.length,
         itemBuilder: (context, index) {
+          final note = notes[index];
           return Padding(
             padding: const EdgeInsets.only(bottom: 16.0),
-            child: IntrospectionCard(note: notes[index]),
+            child: IntrospectionCard(
+              note: note,
+              onEdit: () => onEdit(note),
+              onDelete: () => onDelete(note),
+            ),
           );
         },
       ),

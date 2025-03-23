@@ -8,7 +8,7 @@ part 'introspection_note.g.dart';
 abstract class IntrospectionNote with _$IntrospectionNote {
   const factory IntrospectionNote({
     String? id,
-    // @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
+    @JsonKey(fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
     required DateTime date,
     required List<String> positiveItems,
     required List<String> improvementItems,
