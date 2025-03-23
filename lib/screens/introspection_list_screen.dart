@@ -105,21 +105,29 @@ class IntrospectionListPage extends StatelessWidget {
     Function(IntrospectionNote note) onDelete,
   ) {
     return Expanded(
-      child: ListView.builder(
-        itemCount: notes.length,
-        itemBuilder: (context, index) {
-          final note = notes[notes.length - 1 - index];
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
-            child: IntrospectionCard(
-              note: note,
-              allowManipulation: manipulatingNote != note,
-              onEdit: () => onEdit(note),
-              onDelete: () => onDelete(note),
-            ),
-          );
-        },
-      ),
+      child:
+          notes.isNotEmpty
+              ? ListView.builder(
+                itemCount: notes.length,
+                itemBuilder: (context, index) {
+                  final note = notes[notes.length - 1 - index];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: IntrospectionCard(
+                      note: note,
+                      allowManipulation: manipulatingNote != note,
+                      onEdit: () => onEdit(note),
+                      onDelete: () => onDelete(note),
+                    ),
+                  );
+                },
+              )
+              : Center(
+                child: Text(
+                  "内省がまだありません。\n右下のボタンから追加してください。",
+                  textAlign: TextAlign.center,
+                ),
+              ),
     );
   }
 
