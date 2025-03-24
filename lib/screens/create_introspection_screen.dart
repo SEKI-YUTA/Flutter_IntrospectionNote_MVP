@@ -98,33 +98,8 @@ class CreateIntrospectionPage
                               ),
                             ),
                             const SizedBox(height: 8),
-
-                            TextField(
-                              controller: controller.commentController,
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.all(12),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(6),
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFFE4E4E7),
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(6),
-                                  borderSide: const BorderSide(
-                                    color: Color(0xFF0D9488),
-                                  ),
-                                ),
-                              ),
-                              style: const TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 14,
-                              ),
-                              minLines: 3,
-                              maxLines: 5,
-                            ),
+                            _buildCommentField(),
                             const SizedBox(height: 24),
-
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
@@ -261,6 +236,12 @@ class CreateIntrospectionPage
                   controller: controller.improvementItems[i],
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(12),
+                    hintText: "改善点を入力",
+                    hintStyle: const TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 14,
+                      color: Color(0xFF71717A),
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
                       borderSide: const BorderSide(color: Color(0xFFE4E4E7)),
@@ -285,6 +266,32 @@ class CreateIntrospectionPage
           ),
         );
       }),
+    );
+  }
+
+  Widget _buildCommentField() {
+    return TextField(
+      controller: controller.commentController,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.all(12),
+        hintText: "感想を入力",
+        hintStyle: const TextStyle(
+          fontFamily: 'Inter',
+          fontSize: 14,
+          color: Color(0xFF71717A),
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(6),
+          borderSide: const BorderSide(color: Color(0xFFE4E4E7)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(6),
+          borderSide: const BorderSide(color: Color(0xFF1D4ED8)),
+        ),
+      ),
+      style: const TextStyle(fontFamily: 'Inter', fontSize: 14),
+      minLines: 3,
+      maxLines: 5,
     );
   }
 
