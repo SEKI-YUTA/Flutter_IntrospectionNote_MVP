@@ -116,6 +116,10 @@ class CreateInstropectionScreenController extends GetxController {
     return '${dateFormat.format(_date.value)} ${weekdayFormat.format(_date.value)}';
   }
 
+  void setDate(DateTime date) {
+    _date.value = date;
+  }
+
   void addPositiveItem() {
     _positiveTextControllers.add(TextEditingController());
   }

@@ -12,6 +12,7 @@ class NoteRepositoryImpl extends NoteRepository {
   @override
   Future<List<IntrospectionNote>> fetchNotes() async {
     await Future.delayed(const Duration(seconds: 1));
+    notes.sort((a, b) => b.date.compareTo(a.date));
     return notes;
   }
 

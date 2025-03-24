@@ -110,7 +110,7 @@ class IntrospectionListPage extends StatelessWidget {
               ? ListView.builder(
                 itemCount: notes.length,
                 itemBuilder: (context, index) {
-                  final note = notes[notes.length - 1 - index];
+                  final note = notes[index];
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 16.0),
                     child: IntrospectionCard(

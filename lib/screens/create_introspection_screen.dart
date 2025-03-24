@@ -7,6 +7,27 @@ class CreateIntrospectionPage
     extends GetView<CreateInstropectionScreenController> {
   const CreateIntrospectionPage({super.key});
 
+  void _showDatePicker() async {
+    final now = DateTime.now();
+    final firstDate = now.subtract(const Duration(days: 30));
+    try {
+      final DateTime? picked = await showDatePicker(
+        context: Get.context!,
+        firstDate: firstDate,
+        lastDate: now,
+        initialDate: now,
+      );
+
+      // ダイアログから戻った時点でコントローラーがまだ有効かチェック
+      if (picked != null &&
+          Get.isRegistered<CreateInstropectionScreenController>()) {
+        controller.setDate(picked);
+      }
+    } catch (e) {
+      e.printError();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<CreateInstropectionScreenController>();
@@ -36,14 +57,22 @@ class CreateIntrospectionPage
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              controller.getFormattedDate(),
-                              style: const TextStyle(
-                                fontFamily: 'Geist',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: -0.5,
-                                color: Color(0xFF0F766E),
+                            GestureDetector(
+                              onTap: _showDatePicker,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    controller.getFormattedDate(),
+                                    style: const TextStyle(
+                                      fontFamily: 'Geist',
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      letterSpacing: -0.5,
+                                      color: Color(0xFF0F766E),
+                                    ),
+                                  ),
+                                  Icon(Icons.arrow_drop_down_rounded),
+                                ],
                               ),
                             ),
                             const SizedBox(height: 24),
