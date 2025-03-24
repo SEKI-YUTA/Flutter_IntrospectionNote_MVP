@@ -26,7 +26,7 @@ class CreateInstropectionScreenController extends GetxController {
   final _isSaving = false.obs;
   final _isEditMode = false.obs;
 
-  final commentController = TextEditingController();
+  final dailyCommentController = TextEditingController();
 
   String? editId;
 
@@ -49,7 +49,7 @@ class CreateInstropectionScreenController extends GetxController {
 
     _improvementTextControllers.add(TextEditingController());
 
-    commentController.text = "";
+    dailyCommentController.text = "";
 
     if (Get.arguments != null && Get.arguments is Map) {
       print("Get.arguments: ${Get.arguments}");
@@ -94,7 +94,8 @@ class CreateInstropectionScreenController extends GetxController {
     }
 
     if (introspectionData['dailyComment'] != null) {
-      commentController.text = introspectionData['dailyComment'].toString();
+      dailyCommentController.text =
+          introspectionData['dailyComment'].toString();
     }
   }
 
@@ -106,7 +107,7 @@ class CreateInstropectionScreenController extends GetxController {
     for (var item in _improvementTextControllers) {
       item.dispose();
     }
-    commentController.dispose();
+    dailyCommentController.dispose();
     super.onClose();
   }
 
@@ -160,11 +161,11 @@ class CreateInstropectionScreenController extends GetxController {
               .where((text) => text.isNotEmpty)
               .toList();
 
-      final comment = commentController.text;
+      final dailyComment = dailyCommentController.text;
 
       if (positiveTexts.isEmpty ||
           improvementTexts.isEmpty ||
-          comment.isEmpty) {
+          dailyComment.isEmpty) {
         Get.snackbar(
           'エラー',
           '良かった点、改善点、コメントのすべてを入力してください',
@@ -180,7 +181,7 @@ class CreateInstropectionScreenController extends GetxController {
         'date': _date.value,
         'positiveItems': positiveTexts,
         'improvementItems': improvementTexts,
-        'dailyComment': comment,
+        'dailyComment': dailyComment,
       };
 
       if (_isEditMode.value && editId != null) {

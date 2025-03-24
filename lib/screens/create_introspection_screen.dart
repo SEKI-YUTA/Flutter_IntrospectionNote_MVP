@@ -85,7 +85,8 @@ class CreateIntrospectionPage
                                 fontFamily: 'Inter',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: introspectionColor.positiveItemsToneColor,
+                                color:
+                                    introspectionColor.positiveItemsToneColor,
                               ),
                             ),
                             const SizedBox(height: 8),
@@ -108,7 +109,8 @@ class CreateIntrospectionPage
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                                 color:
-                                    introspectionColor.improvementItemsToneColor,
+                                    introspectionColor
+                                        .improvementItemsToneColor,
                               ),
                             ),
                             const SizedBox(height: 8),
@@ -134,7 +136,7 @@ class CreateIntrospectionPage
                               ),
                             ),
                             const SizedBox(height: 8),
-                            _buildCommentField(
+                            _buildDailyCommentField(
                               introspectionColor.dailyCommentToneColor,
                             ),
                             const SizedBox(height: 24),
@@ -307,9 +309,9 @@ class CreateIntrospectionPage
     );
   }
 
-  Widget _buildCommentField(Color toneColor) {
+  Widget _buildDailyCommentField(Color toneColor) {
     return TextField(
-      controller: controller.commentController,
+      controller: controller.dailyCommentController,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(12),
         hintText: "感想を入力",
