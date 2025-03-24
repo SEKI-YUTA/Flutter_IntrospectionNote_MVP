@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:introspection_note_mvp/controller/create_instropection_screen_controller.dart';
+import 'package:introspection_note_mvp/data/models/create_from_color_scheme.dart';
 import 'package:introspection_note_mvp/util/util.dart';
 
 class CreateIntrospectionPage
@@ -32,6 +33,7 @@ class CreateIntrospectionPage
   Widget build(BuildContext context) {
     final controller = Get.find<CreateInstropectionScreenController>();
     bool _isDarkTheme = isDarkTheme(context);
+    IntrospectionColor introspectionColor = getFormColorScheme(context);
     return Scaffold(
       body: SafeArea(
         child: Obx(() {
@@ -77,18 +79,20 @@ class CreateIntrospectionPage
                             ),
                             const SizedBox(height: 24),
 
-                            const Text(
+                            Text(
                               "良かった点",
                               style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: Color(0xFF047857),
+                                color: introspectionColor.positiveItemsToneColor,
                               ),
                             ),
                             const SizedBox(height: 8),
 
-                            _buildPositiveFields(),
+                            _buildPositiveFields(
+                              introspectionColor.positiveItemsToneColor,
+                            ),
 
                             _buildAddItemButton(
                               onPressed: controller.addPositiveItem,
@@ -97,18 +101,21 @@ class CreateIntrospectionPage
                             ),
                             const SizedBox(height: 24),
 
-                            const Text(
+                            Text(
                               "改善点",
                               style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: Color(0xFFB45309),
+                                color:
+                                    introspectionColor.improvementItemsToneColor,
                               ),
                             ),
                             const SizedBox(height: 8),
 
-                            _buildImprovementFields(),
+                            _buildImprovementFields(
+                              introspectionColor.improvementItemsToneColor,
+                            ),
 
                             _buildAddItemButton(
                               onPressed: controller.addImprovementItem,
@@ -117,17 +124,19 @@ class CreateIntrospectionPage
                             ),
                             const SizedBox(height: 24),
 
-                            const Text(
+                            Text(
                               "1日の感想",
                               style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: Color(0xFF1D4ED8),
+                                color: introspectionColor.dailyCommentToneColor,
                               ),
                             ),
                             const SizedBox(height: 8),
-                            _buildCommentField(),
+                            _buildCommentField(
+                              introspectionColor.dailyCommentToneColor,
+                            ),
                             const SizedBox(height: 24),
                             SizedBox(
                               width: double.infinity,
@@ -147,7 +156,7 @@ class CreateIntrospectionPage
                                   ),
                                   disabledBackgroundColor: const Color(
                                     0xFF0D9488,
-                                  ).withOpacity(0.5),
+                                  ).withValues(alpha: 0.5),
                                 ),
                                 child: Text(
                                   controller.isEditMode ? "更新する" : "保存する",
@@ -208,7 +217,7 @@ class CreateIntrospectionPage
     );
   }
 
-  Widget _buildPositiveFields() {
+  Widget _buildPositiveFields(Color toneColor) {
     return Column(
       children: List.generate(controller.positiveItems.length, (i) {
         return Padding(
@@ -232,7 +241,7 @@ class CreateIntrospectionPage
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
-                      borderSide: const BorderSide(color: Color(0xFF047857)),
+                      borderSide: BorderSide(color: toneColor),
                     ),
                   ),
                   style: const TextStyle(fontFamily: 'Inter', fontSize: 14),
@@ -253,7 +262,7 @@ class CreateIntrospectionPage
     );
   }
 
-  Widget _buildImprovementFields() {
+  Widget _buildImprovementFields(Color toneColor) {
     return Column(
       children: List.generate(controller.improvementItems.length, (i) {
         return Padding(
@@ -277,7 +286,7 @@ class CreateIntrospectionPage
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
-                      borderSide: const BorderSide(color: Color(0xFFB45309)),
+                      borderSide: BorderSide(color: toneColor),
                     ),
                   ),
                   style: const TextStyle(fontFamily: 'Inter', fontSize: 14),
@@ -298,7 +307,7 @@ class CreateIntrospectionPage
     );
   }
 
-  Widget _buildCommentField() {
+  Widget _buildCommentField(Color toneColor) {
     return TextField(
       controller: controller.commentController,
       decoration: InputDecoration(
@@ -315,7 +324,7 @@ class CreateIntrospectionPage
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(6),
-          borderSide: const BorderSide(color: Color(0xFF1D4ED8)),
+          borderSide: BorderSide(color: toneColor),
         ),
       ),
       style: const TextStyle(fontFamily: 'Inter', fontSize: 14),

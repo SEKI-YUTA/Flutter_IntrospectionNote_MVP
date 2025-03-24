@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:introspection_note_mvp/data/models/create_from_color_scheme.dart';
 import 'package:introspection_note_mvp/data/models/introspection_note.dart';
 import 'package:introspection_note_mvp/controller/introspection_list_screen_controller.dart';
+import 'package:introspection_note_mvp/util/util.dart';
 import 'package:introspection_note_mvp/widget/introspection_card.dart';
 
 class IntrospectionListPage extends StatelessWidget {
@@ -10,7 +12,7 @@ class IntrospectionListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<IntrospectionListScreenController>();
-
+    IntrospectionColor introspectionColor = getFormColorScheme(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -37,6 +39,7 @@ class IntrospectionListPage extends StatelessWidget {
                     ? _buildListView(
                       controller.notes,
                       controller.manipulatingNote,
+                      introspectionColor,
                       (IntrospectionNote note) async {
                         var mapData = note.toJson();
                         final result = await Get.toNamed(
@@ -101,6 +104,7 @@ class IntrospectionListPage extends StatelessWidget {
   Widget _buildListView(
     List<IntrospectionNote> notes,
     IntrospectionNote? manipulatingNote,
+    IntrospectionColor introspectionColor,
     Function(IntrospectionNote note) onEdit,
     Function(IntrospectionNote note) onDelete,
   ) {
@@ -115,6 +119,7 @@ class IntrospectionListPage extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 16.0),
                     child: IntrospectionCard(
                       note: note,
+                      introspectionColor: introspectionColor,
                       allowManipulation: manipulatingNote != note,
                       onEdit: () => onEdit(note),
                       onDelete: () => onDelete(note),

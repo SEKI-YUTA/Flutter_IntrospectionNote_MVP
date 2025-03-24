@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:introspection_note_mvp/data/models/create_from_color_scheme.dart';
 import 'package:introspection_note_mvp/data/models/introspection_note.dart';
 import 'package:introspection_note_mvp/util/util.dart';
 
 class IntrospectionCard extends StatelessWidget {
   final IntrospectionNote note;
+  final IntrospectionColor introspectionColor;
   final bool allowManipulation;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
@@ -12,6 +14,7 @@ class IntrospectionCard extends StatelessWidget {
   const IntrospectionCard({
     super.key,
     required this.note,
+    required this.introspectionColor,
     this.allowManipulation = true,
     required this.onEdit,
     required this.onDelete,
@@ -71,9 +74,9 @@ class IntrospectionCard extends StatelessWidget {
                 Row(
                   children: [
                     IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.edit_outlined,
-                        color: Color(0xFF0D9488),
+                        color: introspectionColor.commonToolToneColor,
                       ),
                       onPressed: () {
                         if (!allowManipulation) {
@@ -86,9 +89,9 @@ class IntrospectionCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.delete_outline,
-                        color: Color(0xFFEF4444),
+                        color: introspectionColor.dangerToolToneColor,
                       ),
                       onPressed: () {
                         if (!allowManipulation) {
@@ -109,18 +112,18 @@ class IntrospectionCard extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
             child: Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.thumb_up_outlined,
-                  color: Color(0xFF047857),
+                  color: introspectionColor.positiveItemsToneColor,
                   size: 20,
                 ),
                 const SizedBox(width: 8),
-                const Text(
+                Text(
                   '良かった点',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF047857),
+                    color: introspectionColor.positiveItemsToneColor,
                   ),
                 ),
               ],
@@ -158,18 +161,18 @@ class IntrospectionCard extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             child: Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.lightbulb_outline,
-                  color: Color(0xFFB45309),
+                  color: introspectionColor.improvementItemsToneColor,
                   size: 20,
                 ),
                 const SizedBox(width: 8),
-                const Text(
+                Text(
                   '改善点',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFFB45309),
+                    color: introspectionColor.improvementItemsToneColor,
                   ),
                 ),
               ],
@@ -203,14 +206,14 @@ class IntrospectionCard extends StatelessWidget {
             ),
           ),
 
-          const Padding(
+          Padding(
             padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
             child: Text(
               '1日の感想',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
-                color: Color(0xFF1D4ED8),
+                color: introspectionColor.dailyCommentToneColor,
               ),
             ),
           ),
