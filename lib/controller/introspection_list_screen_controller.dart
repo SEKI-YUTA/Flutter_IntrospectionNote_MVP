@@ -26,8 +26,6 @@ class IntrospectionListScreenController extends GetxController {
     _isLoading.value = true;
     try {
       final notes = await repository.fetchNotes();
-      print("readNotes: ${notes.length}");
-
       _notes.clear();
       _notes.addAll(notes);
     } catch (e) {
