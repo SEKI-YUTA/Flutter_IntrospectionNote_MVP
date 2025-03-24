@@ -65,12 +65,15 @@ class CreateIntrospectionPage
                                 children: [
                                   Text(
                                     controller.getFormattedDate(),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontFamily: 'Geist',
                                       fontSize: 18,
                                       fontWeight: FontWeight.w500,
                                       letterSpacing: -0.5,
-                                      color: Color(0xFF0F766E),
+                                      color:
+                                          _isDarkTheme
+                                              ? Colors.white
+                                              : Colors.black,
                                     ),
                                   ),
                                   Icon(Icons.arrow_drop_down_rounded),
