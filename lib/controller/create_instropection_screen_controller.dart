@@ -64,21 +64,19 @@ class CreateInstropectionScreenController extends GetxController {
 
   void _setupEditMode(dynamic introspectionData) {
     _isEditMode.value = true;
-    editId = introspectionData['id'];
+    editId = introspectionData[IntrospectionNoteColumnNames.id];
 
-    print("setupEditMode: $introspectionData");
-
-    if (introspectionData['date'] != null &&
-        introspectionData['date'] is String) {
-      final value = DateTime.parse(introspectionData['date'] as String);
+    if (introspectionData[IntrospectionNoteColumnNames.date] != null &&
+        introspectionData[IntrospectionNoteColumnNames.date] is String) {
+      final value = DateTime.parse(introspectionData[IntrospectionNoteColumnNames.date] as String);
       _date.value = value;
     }
 
     final encodedPositiveItems = jsonDecode(
-      introspectionData['positive_items'],
+      introspectionData[IntrospectionNoteColumnNames.positiveItems],
     );
     final encodedImprovementItems = jsonDecode(
-      introspectionData['improvement_items'],
+      introspectionData[IntrospectionNoteColumnNames.improvementItems],
     );
     if (encodedPositiveItems != null && encodedPositiveItems is List) {
       _positiveTextControllers.clear();
@@ -183,21 +181,21 @@ class CreateInstropectionScreenController extends GetxController {
       }
 
       final introspectionData = {
-        'date': _date.value,
-        'positive_items': positiveTexts,
-        'improvement_items': improvementTexts,
-        'daily_comment': dailyComment,
+        IntrospectionNoteColumnNames.date: _date.value,
+        IntrospectionNoteColumnNames.positiveItems: positiveTexts,
+        IntrospectionNoteColumnNames.improvementItems: improvementTexts,
+        IntrospectionNoteColumnNames.dailyComment: dailyComment,
       };
 
       if (_isEditMode.value && editId != null) {
-        introspectionData['id'] = editId!;
+        introspectionData[IntrospectionNoteColumnNames.id] = editId!;
       } else {
-        introspectionData['id'] = Uuid().v6();
+        introspectionData[IntrospectionNoteColumnNames.id] = Uuid().v6();
       }
 
-      if (introspectionData['date'] is DateTime) {
-        introspectionData['date'] =
-            (introspectionData['date'] as DateTime).toIso8601String();
+      if (introspectionData[IntrospectionNoteColumnNames.date] is DateTime) {
+        introspectionData[IntrospectionNoteColumnNames.date] =
+            (introspectionData[IntrospectionNoteColumnNames.date] as DateTime).toIso8601String();
       }
 
       final note = IntrospectionNote.fromJson(introspectionData);

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:introspection_note_mvp/constant/constant.dart';
 import 'package:introspection_note_mvp/data/db/DatabaseHelper.dart';
 import 'package:introspection_note_mvp/data/models/introspection_note.dart';
@@ -34,16 +32,9 @@ class NoteRepositoryImpl extends NoteRepository {
   @override
   Future<void> add(IntrospectionNote note) async {
     final db = await dbHelper.database;
-    final Map<String, dynamic> noteMap = {
-      'id': note.id,
-      'date': note.date.toIso8601String(),
-      'positive_items': jsonEncode(note.positiveItems), // リストをJSON文字列に
-      'improvement_items': jsonEncode(note.improvementItems), // リストをJSON文字列に
-      'daily_comment': note.dailyComment,
-    };
     await db.insert(
       DatabaseHelper.table,
-      noteMap,
+      note.toJson(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }

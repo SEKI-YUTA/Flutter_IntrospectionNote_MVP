@@ -5,29 +5,37 @@ import 'dart:convert';
 part 'introspection_note.freezed.dart';
 part 'introspection_note.g.dart';
 
+class IntrospectionNoteColumnNames {
+  static const String id = 'id';
+  static const String date = 'date';
+  static const String positiveItems = 'positive_items';
+  static const String improvementItems = 'improvement_items';
+  static const String dailyComment = 'daily_comment';
+}
+
 @freezed
 abstract class IntrospectionNote with _$IntrospectionNote {
   const factory IntrospectionNote({
-    @JsonKey(name: 'id') String? id,
+    @JsonKey(name: IntrospectionNoteColumnNames.id) String? id,
 
-    @JsonKey(name: 'date', fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
+    @JsonKey(name: IntrospectionNoteColumnNames.date, fromJson: _dateTimeFromJson, toJson: _dateTimeToJson)
     required DateTime date,
 
     @JsonKey(
-      name: 'positive_items',
+      name: IntrospectionNoteColumnNames.positiveItems,
       fromJson: _listFromJson,
       toJson: _listToJson,
     )
     required List<String> positiveItems,
 
     @JsonKey(
-      name: 'improvement_items',
+      name: IntrospectionNoteColumnNames.improvementItems,
       fromJson: _listFromJson,
       toJson: _listToJson,
     )
     required List<String> improvementItems,
 
-    @JsonKey(name: 'daily_comment') required String dailyComment,
+    @JsonKey(name: IntrospectionNoteColumnNames.dailyComment) required String dailyComment,
   }) = _IntrospectionNote;
 
   factory IntrospectionNote.fromJson(Map<String, dynamic> json) =>
