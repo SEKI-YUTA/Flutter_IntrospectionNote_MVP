@@ -41,6 +41,12 @@ dependencies:
     # firebase_ui_auth: ^1.16.1
     # firebase_core: ^3.12.1
     timezone: ^0.10.0
+    intl: ^0.20.2
+    get: ^4.7.2
+    freezed: ^3.0.4
+    json_annotation: ^4.9.0
+    freezed_annotation: ^3.0.0
+    uuid: ^4.5.1
 
 dev_dependencies:
     flutter_test:
@@ -52,6 +58,9 @@ dev_dependencies:
     # package. See that file for information about deactivating specific lint
     # rules and activating additional ones.
     flutter_lints: ^5.0.0
+    build_runner: ^2.4.15
+    json_serializable: ^6.9.4
+    freezed: ^3.0.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
