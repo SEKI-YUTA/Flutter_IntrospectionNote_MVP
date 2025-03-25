@@ -49,10 +49,10 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: "/settings",
-          page: () => SettingScreen(),
+          page: () => SettingsPage(),
           binding: SettingScreenBinding(),
         ),
-        GetPage(name: "/license", page: () => const LicenseScreen()),
+        GetPage(name: "/license", page: () => const LicenseListPage()),
       ],
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,

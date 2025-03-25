@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:get/utils.dart';
 import 'package:introspection_note_mvp/controller/settings_screen_controller.dart';
 
-class SettingScreen extends GetView<SettingsScreenController> {
-  const SettingScreen({super.key});
+class SettingsPage extends GetView<SettingsScreenController> {
+  const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

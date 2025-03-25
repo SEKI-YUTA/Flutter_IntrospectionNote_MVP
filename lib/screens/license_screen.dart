@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class LicenseScreen extends StatelessWidget {
-  const LicenseScreen({super.key});
+class LicenseListPage extends StatelessWidget {
+  const LicenseListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return LicensePage(
       applicationName: '内省ノート',
       applicationVersion: '1.0.0',
-      applicationIcon: Icon(Icons.note),
+      applicationIcon: Icon(Icons.note), // アプリのアイコン
       applicationLegalese: 'All rights reserved',
     );
   }
