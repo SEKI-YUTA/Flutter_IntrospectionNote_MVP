@@ -40,7 +40,6 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 16),
                 _buildSwitchViewMode(controller),
                 controller.isLoading
                     ? _buildLoading()
