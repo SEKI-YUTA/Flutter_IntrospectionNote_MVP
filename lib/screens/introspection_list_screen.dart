@@ -5,6 +5,7 @@ import 'package:introspection_note_mvp/data/models/introspection_note.dart';
 import 'package:introspection_note_mvp/controller/introspection_list_screen_controller.dart';
 import 'package:introspection_note_mvp/util/util.dart';
 import 'package:introspection_note_mvp/widget/introspection_card.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
   const IntrospectionListPage({super.key});
@@ -25,12 +26,7 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final result = await Get.toNamed("/create_introspection");
-          if (result != null) {
-            await controller.readNotes();
-          }
-        },
+        onPressed: controller.navigateToCreateIntrospectionScreen,
         child: const Icon(Icons.add),
       ),
       body: Obx(() {
@@ -48,21 +44,14 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
                       controller.notes,
                       controller.manipulatingNote,
                       introspectionColor,
-                      (IntrospectionNote note) async {
-                        var mapData = note.toJson();
-                        final result = await Get.toNamed(
-                          "/create_introspection",
-                          arguments: {'introspection': mapData},
-                        );
-                        if (result != null) {
-                          await controller.readNotes();
-                        }
+                      (IntrospectionNote note) {
+                        controller.edit(note);
                       },
                       (IntrospectionNote note) {
                         controller.delete(note);
                       },
                     )
-                    : _buildCalendarVIew(),
+                    : Expanded(child: _buildCalendarVIew()),
               ],
             ),
           ),
@@ -145,7 +134,49 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
   }
 
   Widget _buildCalendarVIew() {
-    return const Center(child: Text('カレンダービュー\nComming soon...'));
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: TableCalendar(
+              focusedDay: controller.selectedDate,
+              currentDay: controller.selectedDate,
+              firstDay: DateTime.utc(2025, 3, 20),
+              lastDay: DateTime.now(),
+              onDaySelected: (selectedDay, focusedDay) {
+                controller.changeSelectedDate(selectedDay);
+              },
+            ),
+          ),
+          // Expandedを削除し、ListView.builderにshrinkWrapを適用
+          controller.filteredNotes.isEmpty
+              ? Container(
+                height: 100, // 空の場合の最小高さを指定
+                alignment: Alignment.center,
+                child: Text('ノートがありません'),
+              )
+              : ListView.builder(
+                shrinkWrap: true, // これが重要
+                physics: NeverScrollableScrollPhysics(), // 親のスクロールを使用
+                itemCount: controller.filteredNotes.length,
+                itemBuilder: (context, index) {
+                  final note = controller.filteredNotes[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: IntrospectionCard(
+                      note: note,
+                      introspectionColor: getFormColorScheme(context),
+                      allowManipulation: controller.manipulatingNote != note,
+                      onEdit: () => controller.edit(note),
+                      onDelete: () => controller.delete(note),
+                    ),
+                  );
+                },
+              ),
+        ],
+      ),
+    );
   }
 
   Widget _buildLoading() {
