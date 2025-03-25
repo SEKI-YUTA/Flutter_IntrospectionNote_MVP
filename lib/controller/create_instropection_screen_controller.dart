@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -62,40 +64,41 @@ class CreateInstropectionScreenController extends GetxController {
 
   void _setupEditMode(dynamic introspectionData) {
     _isEditMode.value = true;
-    editId = introspectionData['id'];
+    editId = introspectionData[IntrospectionNoteColumnNames.id];
 
-    if (introspectionData['date'] != null &&
-        introspectionData['date'] is String) {
-      final value = DateTime.parse(introspectionData['date'] as String);
+    if (introspectionData[IntrospectionNoteColumnNames.date] != null &&
+        introspectionData[IntrospectionNoteColumnNames.date] is String) {
+      final value = DateTime.parse(introspectionData[IntrospectionNoteColumnNames.date] as String);
       _date.value = value;
     }
 
-    if (introspectionData['positiveItems'] != null &&
-        introspectionData['positiveItems'] is List) {
+    final encodedPositiveItems = jsonDecode(
+      introspectionData[IntrospectionNoteColumnNames.positiveItems],
+    );
+    final encodedImprovementItems = jsonDecode(
+      introspectionData[IntrospectionNoteColumnNames.improvementItems],
+    );
+    if (encodedPositiveItems != null && encodedPositiveItems is List) {
       _positiveTextControllers.clear();
-      final items = introspectionData['positiveItems'] as List;
-
-      for (final item in items) {
+      for (final item in encodedPositiveItems) {
         _positiveTextControllers.add(
           TextEditingController(text: item.toString()),
         );
       }
     }
 
-    if (introspectionData['improvementItems'] != null &&
-        introspectionData['improvementItems'] is List) {
+    if (encodedImprovementItems != null && encodedImprovementItems is List) {
       _improvementTextControllers.clear();
-      final items = introspectionData['improvementItems'] as List;
-      for (final item in items) {
+      for (final item in encodedImprovementItems) {
         _improvementTextControllers.add(
           TextEditingController(text: item.toString()),
         );
       }
     }
 
-    if (introspectionData['dailyComment'] != null) {
+    if (introspectionData['daily_comment'] != null) {
       dailyCommentController.text =
-          introspectionData['dailyComment'].toString();
+          introspectionData['daily_comment'].toString();
     }
   }
 
@@ -178,21 +181,21 @@ class CreateInstropectionScreenController extends GetxController {
       }
 
       final introspectionData = {
-        'date': _date.value,
-        'positiveItems': positiveTexts,
-        'improvementItems': improvementTexts,
-        'dailyComment': dailyComment,
+        IntrospectionNoteColumnNames.date: _date.value,
+        IntrospectionNoteColumnNames.positiveItems: positiveTexts,
+        IntrospectionNoteColumnNames.improvementItems: improvementTexts,
+        IntrospectionNoteColumnNames.dailyComment: dailyComment,
       };
 
       if (_isEditMode.value && editId != null) {
-        introspectionData['id'] = editId!;
+        introspectionData[IntrospectionNoteColumnNames.id] = editId!;
       } else {
-        introspectionData['id'] = Uuid().v6();
+        introspectionData[IntrospectionNoteColumnNames.id] = Uuid().v6();
       }
 
-      if (introspectionData['date'] is DateTime) {
-        introspectionData['date'] =
-            (introspectionData['date'] as DateTime).toIso8601String();
+      if (introspectionData[IntrospectionNoteColumnNames.date] is DateTime) {
+        introspectionData[IntrospectionNoteColumnNames.date] =
+            (introspectionData[IntrospectionNoteColumnNames.date] as DateTime).toIso8601String();
       }
 
       final note = IntrospectionNote.fromJson(introspectionData);

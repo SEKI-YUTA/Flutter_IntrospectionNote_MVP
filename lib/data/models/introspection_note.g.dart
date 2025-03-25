@@ -9,23 +9,17 @@ part of 'introspection_note.dart';
 _IntrospectionNote _$IntrospectionNoteFromJson(Map<String, dynamic> json) =>
     _IntrospectionNote(
       id: json['id'] as String?,
-      date: DateTime.parse(json['date'] as String),
-      positiveItems:
-          (json['positiveItems'] as List<dynamic>)
-              .map((e) => e as String)
-              .toList(),
-      improvementItems:
-          (json['improvementItems'] as List<dynamic>)
-              .map((e) => e as String)
-              .toList(),
-      dailyComment: json['dailyComment'] as String,
+      date: _dateTimeFromJson(json['date'] as String),
+      positiveItems: _listFromJson(json['positive_items']),
+      improvementItems: _listFromJson(json['improvement_items']),
+      dailyComment: json['daily_comment'] as String,
     );
 
 Map<String, dynamic> _$IntrospectionNoteToJson(_IntrospectionNote instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'date': instance.date.toIso8601String(),
-      'positiveItems': instance.positiveItems,
-      'improvementItems': instance.improvementItems,
-      'dailyComment': instance.dailyComment,
+      'date': _dateTimeToJson(instance.date),
+      'positive_items': _listToJson(instance.positiveItems),
+      'improvement_items': _listToJson(instance.improvementItems),
+      'daily_comment': instance.dailyComment,
     };
