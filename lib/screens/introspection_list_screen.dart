@@ -6,20 +6,22 @@ import 'package:introspection_note_mvp/controller/introspection_list_screen_cont
 import 'package:introspection_note_mvp/util/util.dart';
 import 'package:introspection_note_mvp/widget/introspection_card.dart';
 
-class IntrospectionListPage extends StatelessWidget {
+class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
   const IntrospectionListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<IntrospectionListScreenController>();
     IntrospectionColor introspectionColor = getFormColorScheme(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("内省ノート"),
         actions: [
-          IconButton(onPressed: () {
-            Get.toNamed("/settings");
-          }, icon: const Icon(Icons.settings)),
+          IconButton(
+            onPressed: () {
+              Get.toNamed("/settings");
+            },
+            icon: const Icon(Icons.settings),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
