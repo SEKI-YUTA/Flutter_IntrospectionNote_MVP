@@ -1,10 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_navigation/get_navigation.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:introspection_note_mvp/binding/application_binding.dart';
 import 'package:introspection_note_mvp/binding/create_introspection_screen_binding.dart';
 import 'package:introspection_note_mvp/binding/introspection_screen_binding.dart';
@@ -47,6 +44,14 @@ class MyApp extends StatelessWidget {
           page: () => CreateIntrospectionPage(),
           binding: CreateIntrospectionBinding(),
         ),
+      ],
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'), // English
+        const Locale('ja', 'JP'), // Japanese
       ],
     );
   }

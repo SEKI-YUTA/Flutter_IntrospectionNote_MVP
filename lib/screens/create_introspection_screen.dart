@@ -13,6 +13,7 @@ class CreateIntrospectionPage
     final firstDate = now.subtract(const Duration(days: 30));
     try {
       final DateTime? picked = await showDatePicker(
+        locale: const Locale("ja"),
         context: Get.context!,
         firstDate: firstDate,
         lastDate: now,
