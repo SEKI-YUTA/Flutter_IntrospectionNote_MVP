@@ -41,6 +41,10 @@ class IntrospectionListScreenController extends GetxController {
     }
   }
 
+  void navigateToSettingsScreen() {
+    Get.toNamed("/settings");
+  }
+
   Future<void> navigateToCreateIntrospectionScreen() async {
     final result = await Get.toNamed("/create_introspection");
     if (result != null) {

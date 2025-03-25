@@ -18,9 +18,7 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
         title: Text("内省ノート"),
         actions: [
           IconButton(
-            onPressed: () {
-              Get.toNamed("/settings");
-            },
+            onPressed: controller.navigateToSettingsScreen,
             icon: const Icon(Icons.settings),
           ),
         ],

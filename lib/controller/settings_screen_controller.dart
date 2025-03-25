@@ -29,6 +29,10 @@ class SettingsScreenController extends GetxController {
     }
   }
 
+  void navigateToLicenseScreen() {
+    Get.toNamed("/license");
+  }
+
   Future<void> toggleRemindNotification(bool value) async {
     try {
       _isLoading.value = true;
