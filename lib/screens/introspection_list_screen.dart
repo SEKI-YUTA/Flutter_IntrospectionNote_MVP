@@ -152,7 +152,7 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
               ? Container(
                 height: 100, // 空の場合の最小高さを指定
                 alignment: Alignment.center,
-                child: Text('ノートがありません'),
+                child: Text("内省がありません"),
               )
               : ListView.builder(
                 shrinkWrap: true, // これが重要
