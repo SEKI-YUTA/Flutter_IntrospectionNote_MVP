@@ -14,6 +14,14 @@ class IntrospectionListPage extends StatelessWidget {
     final controller = Get.find<IntrospectionListScreenController>();
     IntrospectionColor introspectionColor = getFormColorScheme(context);
     return Scaffold(
+      appBar: AppBar(
+        title: Text("内省ノート"),
+        actions: [
+          IconButton(onPressed: () {
+            Get.toNamed("/settings");
+          }, icon: const Icon(Icons.settings)),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final result = await Get.toNamed("/create_introspection");
@@ -30,7 +38,6 @@ class IntrospectionListPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildHeader(),
                 const SizedBox(height: 16),
                 _buildSwitchViewMode(controller),
                 controller.isLoading
