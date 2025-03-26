@@ -16,12 +16,13 @@ class NotificationUtil {
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
     bool? result = false;
-    if (Platform.isIOS || Platform.isMacOS) {
+    if (Platform.isIOS) {
       result = await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
             IOSFlutterLocalNotificationsPlugin
           >()
           ?.requestPermissions(alert: true, badge: true, sound: true);
+    } else if (Platform.isMacOS) {
       result = await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
             MacOSFlutterLocalNotificationsPlugin
