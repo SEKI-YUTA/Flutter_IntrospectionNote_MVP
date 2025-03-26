@@ -50,16 +50,14 @@ class SettingsScreenController extends GetxController
       _grantedExactAlarmPermission.value =
           await Permission.scheduleExactAlarm.status ==
           PermissionStatus.granted;
-      SharedpreferenceHelper.instance
-          .getString(SharedpreferenceHelper.SETTING_PUSH_NOTIFICATION_TIME)
-          .then((value) {
-            if (value == "") {
-              value = "20:00";
-              _remindTime.value = value;
-            } else {
-              _remindTime.value = value;
-            }
-          });
+      final value = await SharedpreferenceHelper.instance.getString(
+        SharedpreferenceHelper.SETTING_PUSH_NOTIFICATION_TIME,
+      );
+      if (value == "") {
+        _remindTime.value = "20:00";
+      } else {
+        _remindTime.value = value;
+      }
     } catch (e) {
       e.printError();
     } finally {
