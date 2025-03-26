@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:introspection_note_mvp/controller/settings_screen_controller.dart';
@@ -19,7 +21,8 @@ class SettingsPage extends GetView<SettingsScreenController> {
                   title: const Text("内省のリマインド"),
                   subtitle:
                       controller.grantedNotificationPermission &&
-                              controller.grantedExactAlarmPermission
+                              (controller.grantedExactAlarmPermission ||
+                                  Platform.isIOS)
                           ? null
                           : GestureDetector(
                             onTap: () {
@@ -34,7 +37,8 @@ class SettingsPage extends GetView<SettingsScreenController> {
                     value: controller.enabledRemindNotification,
                     onChanged:
                         controller.grantedNotificationPermission &&
-                                controller.grantedExactAlarmPermission
+                                (controller.grantedExactAlarmPermission ||
+                                    Platform.isIOS)
                             ? (value) {
                               controller.toggleRemindNotification(value);
                             }
