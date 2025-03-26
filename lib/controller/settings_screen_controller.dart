@@ -1,9 +1,14 @@
 import 'package:get/get.dart';
 import 'package:introspection_note_mvp/data/repositories/settings_repository.dart';
+import 'package:introspection_note_mvp/util/notification_util.dart';
 
 class SettingsScreenController extends GetxController {
   final SettingsRepository repository;
-  SettingsScreenController({required this.repository});
+  final NotificationUtil notificationUtil;
+  SettingsScreenController({
+    required this.repository,
+    required this.notificationUtil,
+  });
 
   final _isLoading = false.obs;
   final _enabledRemindNotification = false.obs;
@@ -38,6 +43,13 @@ class SettingsScreenController extends GetxController {
       _isLoading.value = true;
       await repository.setEnableRemindNotification(value);
       _enabledRemindNotification.value = value;
+      if (value) {
+        NotificationUtil.instance.enableRemindNotification();
+        Get.snackbar("設定", "リマインド通知を有効にしました");
+      } else {
+        NotificationUtil.instance.disableRemindNotification();
+        Get.snackbar("設定", "リマインド通知を無効にしました");
+      }
     } catch (e) {
       e.printError();
     } finally {

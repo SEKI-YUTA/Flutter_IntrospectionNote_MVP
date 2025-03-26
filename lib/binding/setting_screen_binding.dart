@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:introspection_note_mvp/controller/settings_screen_controller.dart';
 import 'package:introspection_note_mvp/data/repositories/settings_repository.dart';
 import 'package:introspection_note_mvp/data/sharedpref/SharedPreferenceHelper.dart';
+import 'package:introspection_note_mvp/util/notification_util.dart';
 
 class SettingScreenBinding extends Bindings {
   @override
@@ -13,6 +14,8 @@ class SettingScreenBinding extends Bindings {
       () => SettingsRepository(sharedpreferencehelper: Get.find()),
     );
 
-    Get.lazyPut(() => SettingsScreenController(repository: Get.find()));
+    Get.lazyPut<NotificationUtil>(() => NotificationUtil.instance);
+
+    Get.lazyPut(() => SettingsScreenController(repository: Get.find(), notificationUtil: Get.find()));
   }
 }
