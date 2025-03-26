@@ -8,13 +8,17 @@ class IntrospectionListScreenController extends GetxController {
   IntrospectionListScreenController({required this.repository});
 
   final _notes = <IntrospectionNote>[].obs;
+  final _filteredNotes = <IntrospectionNote>[].obs;
   final _isLoading = true.obs;
   final _viewMode = ViewMode.List.obs;
+  final _selectedDate = DateTime.now().obs;
   final Rx<IntrospectionNote?> _manipulatingNote = Rx<IntrospectionNote?>(null);
   List<IntrospectionNote> get notes => _notes.toList();
+  List<IntrospectionNote> get filteredNotes => _filteredNotes.toList();
   bool get isLoading => _isLoading.value;
   ViewMode get viewMode => _viewMode.value;
   IntrospectionNote? get manipulatingNote => _manipulatingNote.value;
+  DateTime get selectedDate => _selectedDate.value;
 
   @override
   void onInit() {
@@ -28,11 +32,34 @@ class IntrospectionListScreenController extends GetxController {
       final notes = await repository.fetchNotes();
       _notes.clear();
       _notes.addAll(notes);
+      filterNotesByDate(_selectedDate.value);
     } catch (e) {
       e.printError();
     } finally {
       _isLoading.value = false;
       update();
+    }
+  }
+
+  void navigateToSettingsScreen() {
+    Get.toNamed("/settings");
+  }
+
+  Future<void> navigateToCreateIntrospectionScreen() async {
+    final result = await Get.toNamed("/create_introspection");
+    if (result != null) {
+      await readNotes();
+    }
+  }
+
+  Future<void> edit(IntrospectionNote note) async {
+    var mapData = note.toJson();
+    final result = await Get.toNamed(
+      "/create_introspection",
+      arguments: {'introspection': mapData},
+    );
+    if (result != null) {
+      await readNotes();
     }
   }
 
@@ -70,6 +97,28 @@ class IntrospectionListScreenController extends GetxController {
 
   void changeViewMode(ViewMode mode) {
     _viewMode.value = mode;
+    if (mode == ViewMode.Calendar) {
+      filterNotesByDate(_selectedDate.value);
+    }
+  }
+
+  void changeSelectedDate(DateTime date) {
+    _selectedDate.value = date;
+    filterNotesByDate(date);
+    update();
+  }
+
+  void filterNotesByDate(DateTime date) {
+    _filteredNotes.clear();
+    _filteredNotes.addAll(
+      _notes.where((note) {
+        final noteDate = note.date;
+        return noteDate.year == date.year &&
+            noteDate.month == date.month &&
+            noteDate.day == date.day;
+      }),
+    );
+    update();
   }
 }
 

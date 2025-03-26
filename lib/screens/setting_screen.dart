@@ -26,6 +26,7 @@ class SettingsPage extends GetView<SettingsScreenController> {
               ),
               Spacer(),
               GestureDetector(
+                onTap: controller.navigateToLicenseScreen,
                 child: SizedBox(
                   width: double.infinity,
                   child: Padding(
@@ -37,9 +38,6 @@ class SettingsPage extends GetView<SettingsScreenController> {
                     ),
                   ),
                 ),
-                onTap: () {
-                  Get.toNamed("/license");
-                },
               ),
             ],
           ),
