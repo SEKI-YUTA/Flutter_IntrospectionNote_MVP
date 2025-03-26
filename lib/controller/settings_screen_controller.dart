@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:introspection_note_mvp/data/repositories/settings_repository.dart';
+import 'package:introspection_note_mvp/data/sharedpref/SharedPreferenceHelper.dart';
 import 'package:introspection_note_mvp/util/notification_util.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -17,11 +18,13 @@ class SettingsScreenController extends GetxController
   final _grantedNotificationPermission = false.obs;
   final _grantedExactAlarmPermission = false.obs;
   final _enabledRemindNotification = false.obs;
+  final _remindTime = "".obs;
   bool get isLoading => _isLoading.value;
   bool get grantedNotificationPermission =>
       _grantedNotificationPermission.value;
   bool get enabledRemindNotification => _enabledRemindNotification.value;
   bool get grantedExactAlarmPermission => _grantedExactAlarmPermission.value;
+  String get remindTime => _remindTime.value;
 
   @override
   void onInit() {
@@ -46,6 +49,16 @@ class SettingsScreenController extends GetxController
       _grantedExactAlarmPermission.value =
           await Permission.scheduleExactAlarm.status ==
           PermissionStatus.granted;
+      SharedpreferenceHelper.instance
+          .getString(SharedpreferenceHelper.SETTING_PUSH_NOTIFICATION_TIME)
+          .then((value) {
+            if (value == "") {
+              value = "20:00";
+              _remindTime.value = value;
+            } else {
+              _remindTime.value = value;
+            }
+          });
     } catch (e) {
       e.printError();
     } finally {
@@ -81,9 +94,36 @@ class SettingsScreenController extends GetxController
   Future<void> requestExactNotificationPermission() async {
     var notification = await Permission.notification.request();
     var exactAlarm = await Permission.scheduleExactAlarm.request();
-    _grantedNotificationPermission.value = notification == PermissionStatus.granted;
+    _grantedNotificationPermission.value =
+        notification == PermissionStatus.granted;
     _grantedExactAlarmPermission.value = exactAlarm == PermissionStatus.granted;
     update();
+  }
+
+  Future<void> changeRemindTime() async {
+    var time = await showTimePicker(
+      context: Get.context!,
+      initialTime: TimeOfDay(
+        hour: int.parse(_remindTime.value.split(":")[0]),
+        minute: int.parse(_remindTime.value.split(":")[1]),
+      ),
+    );
+    if (time != null) {
+      _remindTime.value = "${time.hour}:${time.minute}";
+      SharedpreferenceHelper.instance.setString(
+        SharedpreferenceHelper.SETTING_PUSH_NOTIFICATION_TIME,
+        _remindTime.value,
+      );
+      update();
+      bool enableRemindNotification = await SharedpreferenceHelper.instance
+          .getBool(SharedpreferenceHelper.SETTING_ENABLE_REMIND_NOTIFICATION);
+      bool permissionGranted =
+          await NotificationUtil.instance.checkPermissions();
+      if (enableRemindNotification && permissionGranted) {
+        NotificationUtil.instance.disableRemindNotification();
+        NotificationUtil.instance.enableRemindNotification();
+      }
+    }
   }
 
   @override

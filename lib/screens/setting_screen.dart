@@ -46,6 +46,21 @@ class SettingsPage extends GetView<SettingsScreenController> {
                   ),
                 ),
 
+                ListTile(
+                  title: const Text("リマインドの時間"),
+                  trailing:
+                      controller.enabledRemindNotification
+                          ? GestureDetector(
+                            onTap: () {
+                              controller.changeRemindTime();
+                            },
+                            child: Text(
+                              controller.remindTime,
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          )
+                          : null,
+                ),
                 Spacer(),
                 GestureDetector(
                   onTap: controller.navigateToLicenseScreen,
