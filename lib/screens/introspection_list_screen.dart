@@ -5,7 +5,6 @@ import 'package:introspection_note_mvp/data/models/introspection_note.dart';
 import 'package:introspection_note_mvp/controller/introspection_list_screen_controller.dart';
 import 'package:introspection_note_mvp/util/util.dart';
 import 'package:introspection_note_mvp/widget/introspection_card.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
@@ -56,22 +55,6 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
           ),
         );
       }),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Text(
-          '内省ノート',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF0F766E),
-          ),
-        ),
-      ],
     );
   }
 

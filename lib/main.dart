@@ -28,13 +28,6 @@ void main() async {
 Future<void> setUpNotification() async {
   await NotificationUtil.instance.initNotification();
   final granted = await NotificationUtil.instance.requestPermissions();
-  print("granted: $granted");
-  // bool isRemindEnabled = await SharedpreferenceHelper.instance.getBool(
-  //   SharedpreferenceHelper.SETTING_ENABLE_REMIND_NOTIFICATION,
-  // );
-  // if (isRemindEnabled) {
-  //   NotificationUtil.instance.enableRemindNotification();
-  // }
   SharedpreferenceHelper.instance.setBool(
     SharedpreferenceHelper.SETTING_ENABLE_REMIND_NOTIFICATION,
     granted,
@@ -97,20 +90,17 @@ class AppLifecycleService extends GetxService with WidgetsBindingObserver {
   @override
   void onInit() {
     super.onInit();
-    print("AppLifecycleService onInit");
     WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void onClose() {
-    print("AppLifecycleService onClose");
     WidgetsBinding.instance.removeObserver(this);
     super.onClose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    print("state: $state");
     if (state == AppLifecycleState.detached) {
       dbHelper.close();
     } else if (state == AppLifecycleState.resumed) {
