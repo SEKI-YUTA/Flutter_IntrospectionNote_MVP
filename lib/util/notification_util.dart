@@ -31,7 +31,12 @@ class NotificationUtil {
               .resolvePlatformSpecificImplementation<
                 AndroidFlutterLocalNotificationsPlugin
               >();
-      result = await androidImplementation?.requestNotificationsPermission();
+      bool result1 =
+          await androidImplementation?.requestNotificationsPermission() ??
+          false;
+      bool result2 =
+          await androidImplementation?.requestExactAlarmsPermission() ?? false;
+      result = result1 && result2;
     }
     print("requestPermissions: $result");
     return result ?? false;
