@@ -17,50 +17,9 @@ class SettingsPage extends GetView<SettingsScreenController> {
             opacity: controller.isLoading ? 0.5 : 1,
             child: Column(
               children: [
-                ListTile(
-                  title: const Text("内省のリマインド"),
-                  subtitle:
-                      controller.grantedNotificationPermission &&
-                              (controller.grantedExactAlarmPermission ||
-                                  Platform.isIOS)
-                          ? null
-                          : GestureDetector(
-                            onTap: () {
-                              controller.requestExactNotificationPermission();
-                            },
-                            child: const Text(
-                              "通知の許可が必要です",
-                              style: TextStyle(color: Colors.red),
-                            ),
-                          ),
-                  trailing: Switch(
-                    value: controller.enabledRemindNotification,
-                    onChanged:
-                        controller.grantedNotificationPermission &&
-                                (controller.grantedExactAlarmPermission ||
-                                    Platform.isIOS)
-                            ? (value) {
-                              controller.toggleRemindNotification(value);
-                            }
-                            : null,
-                  ),
-                ),
+                _buildRemindNotificationTile(),
 
-                ListTile(
-                  title: const Text("リマインドの時間"),
-                  trailing:
-                      controller.enabledRemindNotification
-                          ? GestureDetector(
-                            onTap: () {
-                              controller.changeRemindTime();
-                            },
-                            child: Text(
-                              controller.remindTime,
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          )
-                          : null,
-                ),
+                _buildRemindTimeTile(),
                 Spacer(),
                 GestureDetector(
                   onTap: controller.navigateToLicenseScreen,
@@ -80,6 +39,53 @@ class SettingsPage extends GetView<SettingsScreenController> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildRemindTimeTile() {
+    return ListTile(
+      title: const Text("リマインドの時間"),
+      trailing:
+          controller.enabledRemindNotification
+              ? GestureDetector(
+                onTap: () {
+                  controller.changeRemindTime();
+                },
+                child: Text(
+                  controller.remindTime,
+                  style: TextStyle(fontSize: 16),
+                ),
+              )
+              : null,
+    );
+  }
+
+  Widget _buildRemindNotificationTile() {
+    return ListTile(
+      title: const Text("内省のリマインド"),
+      subtitle:
+          controller.grantedNotificationPermission &&
+                  (controller.grantedExactAlarmPermission || Platform.isIOS)
+              ? null
+              : GestureDetector(
+                onTap: () {
+                  controller.requestExactNotificationPermission();
+                },
+                child: const Text(
+                  "通知の許可が必要です",
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+      trailing: Switch(
+        value: controller.enabledRemindNotification,
+        onChanged:
+            controller.grantedNotificationPermission &&
+                    (controller.grantedExactAlarmPermission || Platform.isIOS)
+                ? (value) {
+                  controller.toggleRemindNotification(value);
+                }
+                : null,
       ),
     );
   }

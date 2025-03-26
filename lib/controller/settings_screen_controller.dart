@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:introspection_note_mvp/data/repositories/settings_repository.dart';
 import 'package:introspection_note_mvp/data/sharedpref/SharedPreferenceHelper.dart';
 import 'package:introspection_note_mvp/util/notification_util.dart';
@@ -109,7 +110,9 @@ class SettingsScreenController extends GetxController
       ),
     );
     if (time != null) {
-      _remindTime.value = "${time.hour}:${time.minute}";
+      var formater = NumberFormat("00");
+      _remindTime.value =
+          "${formater.format(time.hour)}:${formater.format(time.minute)}";
       SharedpreferenceHelper.instance.setString(
         SharedpreferenceHelper.SETTING_PUSH_NOTIFICATION_TIME,
         _remindTime.value,
