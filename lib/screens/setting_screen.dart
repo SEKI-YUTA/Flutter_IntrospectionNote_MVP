@@ -17,13 +17,31 @@ class SettingsPage extends GetView<SettingsScreenController> {
               children: [
                 ListTile(
                   title: const Text("内省のリマインド"),
+                  subtitle:
+                      controller.grantedNotificationPermission &&
+                              controller.grantedExactAlarmPermission
+                          ? null
+                          : GestureDetector(
+                            onTap: () {
+                              controller.requestExactNotificationPermission();
+                            },
+                            child: const Text(
+                              "通知の許可が必要です",
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
                   trailing: Switch(
                     value: controller.enabledRemindNotification,
-                    onChanged: (value) {
-                      controller.toggleRemindNotification(value);
-                    },
+                    onChanged:
+                        controller.grantedNotificationPermission &&
+                                controller.grantedExactAlarmPermission
+                            ? (value) {
+                              controller.toggleRemindNotification(value);
+                            }
+                            : null,
                   ),
                 ),
+
                 Spacer(),
                 GestureDetector(
                   onTap: controller.navigateToLicenseScreen,

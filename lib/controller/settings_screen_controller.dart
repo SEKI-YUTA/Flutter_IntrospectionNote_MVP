@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:introspection_note_mvp/data/repositories/settings_repository.dart';
 import 'package:introspection_note_mvp/util/notification_util.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-class SettingsScreenController extends GetxController {
+class SettingsScreenController extends GetxController
+    with WidgetsBindingObserver {
   final SettingsRepository repository;
   final NotificationUtil notificationUtil;
   SettingsScreenController({
@@ -11,14 +14,26 @@ class SettingsScreenController extends GetxController {
   });
 
   final _isLoading = false.obs;
+  final _grantedNotificationPermission = false.obs;
+  final _grantedExactAlarmPermission = false.obs;
   final _enabledRemindNotification = false.obs;
   bool get isLoading => _isLoading.value;
+  bool get grantedNotificationPermission =>
+      _grantedNotificationPermission.value;
   bool get enabledRemindNotification => _enabledRemindNotification.value;
+  bool get grantedExactAlarmPermission => _grantedExactAlarmPermission.value;
 
   @override
   void onInit() {
     super.onInit();
     _initializeData();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void onClose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.onClose();
   }
 
   void _initializeData() async {
@@ -26,6 +41,11 @@ class SettingsScreenController extends GetxController {
       _isLoading.value = true;
       _enabledRemindNotification.value =
           await repository.getEnableRemindNotification();
+      _grantedNotificationPermission.value =
+          await Permission.notification.status == PermissionStatus.granted;
+      _grantedExactAlarmPermission.value =
+          await Permission.scheduleExactAlarm.status ==
+          PermissionStatus.granted;
     } catch (e) {
       e.printError();
     } finally {
@@ -55,6 +75,21 @@ class SettingsScreenController extends GetxController {
     } finally {
       _isLoading.value = false;
       update();
+    }
+  }
+
+  Future<void> requestExactNotificationPermission() async {
+    var notification = await Permission.notification.request();
+    var exactAlarm = await Permission.scheduleExactAlarm.request();
+    _grantedNotificationPermission.value = notification == PermissionStatus.granted;
+    _grantedExactAlarmPermission.value = exactAlarm == PermissionStatus.granted;
+    update();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _initializeData();
     }
   }
 }

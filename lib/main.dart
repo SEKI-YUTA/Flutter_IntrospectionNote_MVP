@@ -29,10 +29,17 @@ Future<void> setUpNotification() async {
   await NotificationUtil.instance.initNotification();
   final granted = await NotificationUtil.instance.requestPermissions();
   print("granted: $granted");
-  bool isRemindEnabled = await SharedpreferenceHelper.instance.getBool(
+  // bool isRemindEnabled = await SharedpreferenceHelper.instance.getBool(
+  //   SharedpreferenceHelper.SETTING_ENABLE_REMIND_NOTIFICATION,
+  // );
+  // if (isRemindEnabled) {
+  //   NotificationUtil.instance.enableRemindNotification();
+  // }
+  SharedpreferenceHelper.instance.setBool(
     SharedpreferenceHelper.SETTING_ENABLE_REMIND_NOTIFICATION,
+    granted,
   );
-  if (isRemindEnabled) {
+  if (granted) {
     NotificationUtil.instance.enableRemindNotification();
   }
 }

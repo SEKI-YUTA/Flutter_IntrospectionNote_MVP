@@ -134,7 +134,7 @@ class NotificationUtil {
       '今日を振り返って明日への準備をしましょう',
       scheduledDate,
       platformChannelSpecifics,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: AndroidScheduleMode.exact,
       matchDateTimeComponents: DateTimeComponents.time,
     );
   }
