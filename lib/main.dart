@@ -5,9 +5,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:introspection_note_mvp/binding/application_binding.dart';
 import 'package:introspection_note_mvp/binding/create_introspection_screen_binding.dart';
 import 'package:introspection_note_mvp/binding/introspection_screen_binding.dart';
+import 'package:introspection_note_mvp/binding/setting_screen_binding.dart';
 import 'package:introspection_note_mvp/data/db/DatabaseHelper.dart';
 import 'package:introspection_note_mvp/screens/create_introspection_screen.dart';
 import 'package:introspection_note_mvp/screens/introspection_list_screen.dart';
+import 'package:introspection_note_mvp/screens/license_screen.dart';
+import 'package:introspection_note_mvp/screens/setting_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,6 +47,12 @@ class MyApp extends StatelessWidget {
           page: () => CreateIntrospectionPage(),
           binding: CreateIntrospectionBinding(),
         ),
+        GetPage(
+          name: "/settings",
+          page: () => SettingsPage(),
+          binding: SettingScreenBinding(),
+        ),
+        GetPage(name: "/license", page: () => const LicenseListPage()),
       ],
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,

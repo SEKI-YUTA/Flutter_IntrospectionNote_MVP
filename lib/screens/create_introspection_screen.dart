@@ -32,7 +32,6 @@ class CreateIntrospectionPage
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<CreateInstropectionScreenController>();
     bool _isDarkTheme = isDarkTheme(context);
     IntrospectionColor introspectionColor = getFormColorScheme(context);
     return Scaffold(
