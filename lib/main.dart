@@ -27,13 +27,29 @@ void main() async {
 
 Future<void> setUpNotification() async {
   await NotificationUtil.instance.initNotification();
-  final granted = await NotificationUtil.instance.requestPermissions();
-  SharedpreferenceHelper.instance.setBool(
-    SharedpreferenceHelper.SETTING_ENABLE_REMIND_NOTIFICATION,
-    granted,
+  final bool alreadyRequested = await SharedpreferenceHelper.instance.getBool(
+    SharedpreferenceHelper.PERMISSION_ALREADY_REQUESTED,
   );
-  if (granted) {
-    NotificationUtil.instance.enableRemindNotification();
+  final bool enableRemindNotification = await SharedpreferenceHelper.instance
+      .getBool(SharedpreferenceHelper.SETTING_ENABLE_REMIND_NOTIFICATION);
+  if (!alreadyRequested) {
+    SharedpreferenceHelper.instance.setBool(
+      SharedpreferenceHelper.PERMISSION_ALREADY_REQUESTED,
+      true,
+    );
+    final granted = await NotificationUtil.instance.requestPermissions();
+    SharedpreferenceHelper.instance.setBool(
+      SharedpreferenceHelper.SETTING_ENABLE_REMIND_NOTIFICATION,
+      granted,
+    );
+    SharedpreferenceHelper.instance.setBool(
+      SharedpreferenceHelper.PERMISSION_ALREADY_REQUESTED,
+      true,
+    );
+  } else if (await NotificationUtil.instance.checkPermissions()) {
+    if (enableRemindNotification) {
+      NotificationUtil.instance.enableRemindNotification();
+    }
   }
 }
 

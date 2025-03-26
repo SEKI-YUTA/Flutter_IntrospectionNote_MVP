@@ -8,6 +8,8 @@ class SharedpreferenceHelper {
   // 10:10のように文字列で保存しておく
   static final String SETTING_PUSH_NOTIFICATION_TIME =
       "introspection_note_mvp:setting_push_notification_time";
+  static final String PERMISSION_ALREADY_REQUESTED =
+      "introspection_note_mvp:permission_already_requested";
 
   SharedpreferenceHelper._privateConstructor();
   static final SharedpreferenceHelper instance =

@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:introspection_note_mvp/data/sharedpref/SharedPreferenceHelper.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationUtil {
@@ -202,5 +204,46 @@ class NotificationUtil {
     } else {
       return todays;
     }
+  }
+
+  /// 権限の状態を確認する関数（リクエストは行わない）
+  Future<bool> checkPermissions() async {
+    if (Platform.isIOS || Platform.isMacOS) {
+      // iOS / MacOS の通知権限
+      var status = await Permission.notification.status;
+      if (status == PermissionStatus.granted) {
+        print("✅ iOS: 通知権限が許可されています");
+        return true;
+      } else {
+        print("❌ iOS: 通知権限が拒否されています");
+        return false;
+      }
+    }
+
+    if (Platform.isAndroid) {
+      // Android の通知権限
+      bool notificationGranted = await Permission.notification.isGranted;
+      // Android 12以降の場合は正確なアラーム権限も確認
+      if (await _isAndroid12OrHigher()) {
+        bool exactAlarmGranted = await Permission.scheduleExactAlarm.isGranted;
+        if (notificationGranted && exactAlarmGranted) {
+          print("✅ Android: 通知権限と正確なアラーム権限が許可されています");
+          return true;
+        } else {
+          print("❌ Android: 通知権限または正確なアラーム権限が拒否されています");
+          return false;
+        }
+      }
+      return notificationGranted;
+    }
+    return false;
+  }
+
+  /// Android 12以上か判定
+  Future<bool> _isAndroid12OrHigher() async {
+    if (!Platform.isAndroid) return false;
+    var plugin = DeviceInfoPlugin();
+    var androidInfo = await plugin.androidInfo;
+    return androidInfo.version.sdkInt >= 31; // Android 12: API 31
   }
 }
