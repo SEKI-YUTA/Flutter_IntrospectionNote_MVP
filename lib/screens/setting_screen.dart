@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/utils.dart';
 import 'package:introspection_note_mvp/controller/settings_screen_controller.dart';
 
 class SettingsPage extends GetView<SettingsScreenController> {
@@ -11,37 +12,80 @@ class SettingsPage extends GetView<SettingsScreenController> {
     return Obx(
       () => Scaffold(
         appBar: AppBar(title: const Text("設定")),
-        body: Opacity(
-          opacity: controller.isLoading ? 0.5 : 1,
-          child: Column(
-            children: [
-              ListTile(
-                title: const Text("内省のリマインド"),
-                trailing: Switch(
-                  value: controller.enabledRemindNotification,
-                  onChanged: (value) {
-                    controller.toggleRemindNotification(value);
-                  },
-                ),
-              ),
-              Spacer(),
-              GestureDetector(
-                onTap: controller.navigateToLicenseScreen,
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Text(
-                      "ライセンス",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16),
+        body: SafeArea(
+          child: Opacity(
+            opacity: controller.isLoading ? 0.5 : 1,
+            child: Column(
+              children: [
+                _buildRemindNotificationTile(),
+
+                _buildRemindTimeTile(),
+                Spacer(),
+                GestureDetector(
+                  onTap: controller.navigateToLicenseScreen,
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: Text(
+                        "ライセンス",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildRemindTimeTile() {
+    return ListTile(
+      title: const Text("リマインドの時間"),
+      trailing:
+          controller.enabledRemindNotification
+              ? GestureDetector(
+                onTap: () {
+                  controller.changeRemindTime();
+                },
+                child: Text(
+                  controller.remindTime,
+                  style: TextStyle(fontSize: 16),
+                ),
+              )
+              : null,
+    );
+  }
+
+  Widget _buildRemindNotificationTile() {
+    return ListTile(
+      title: const Text("内省のリマインド"),
+      subtitle:
+          controller.grantedNotificationPermission &&
+                  (controller.grantedExactAlarmPermission || Platform.isIOS)
+              ? null
+              : GestureDetector(
+                onTap: () {
+                  controller.requestExactNotificationPermission();
+                },
+                child: const Text(
+                  "通知の許可が必要です",
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+      trailing: Switch(
+        value: controller.enabledRemindNotification,
+        onChanged:
+            controller.grantedNotificationPermission &&
+                    (controller.grantedExactAlarmPermission || Platform.isIOS)
+                ? (value) {
+                  controller.toggleRemindNotification(value);
+                }
+                : null,
       ),
     );
   }

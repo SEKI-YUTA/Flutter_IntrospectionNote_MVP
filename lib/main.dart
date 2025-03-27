@@ -7,15 +7,51 @@ import 'package:introspection_note_mvp/binding/create_introspection_screen_bindi
 import 'package:introspection_note_mvp/binding/introspection_screen_binding.dart';
 import 'package:introspection_note_mvp/binding/setting_screen_binding.dart';
 import 'package:introspection_note_mvp/data/db/DatabaseHelper.dart';
+import 'package:introspection_note_mvp/data/sharedpref/SharedPreferenceHelper.dart';
 import 'package:introspection_note_mvp/screens/create_introspection_screen.dart';
 import 'package:introspection_note_mvp/screens/introspection_list_screen.dart';
 import 'package:introspection_note_mvp/screens/license_screen.dart';
 import 'package:introspection_note_mvp/screens/setting_screen.dart';
+import 'package:introspection_note_mvp/util/notification_util.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('ja_JP');
+  tz.initializeTimeZones();
+  tz.setLocalLocation(tz.getLocation("Asia/Tokyo"));
+  await setUpNotification();
   runApp(const MyApp());
+}
+
+Future<void> setUpNotification() async {
+  await NotificationUtil.instance.initNotification();
+  final bool alreadyRequested = await SharedpreferenceHelper.instance.getBool(
+    SharedpreferenceHelper.PERMISSION_ALREADY_REQUESTED,
+  );
+  final bool enableRemindNotification = await SharedpreferenceHelper.instance
+      .getBool(SharedpreferenceHelper.SETTING_ENABLE_REMIND_NOTIFICATION);
+  if (!alreadyRequested) {
+    SharedpreferenceHelper.instance.setBool(
+      SharedpreferenceHelper.PERMISSION_ALREADY_REQUESTED,
+      true,
+    );
+    final granted = await NotificationUtil.instance.requestPermissions();
+    print("granted: $granted");
+    SharedpreferenceHelper.instance.setBool(
+      SharedpreferenceHelper.SETTING_ENABLE_REMIND_NOTIFICATION,
+      granted,
+    );
+    SharedpreferenceHelper.instance.setBool(
+      SharedpreferenceHelper.PERMISSION_ALREADY_REQUESTED,
+      true,
+    );
+  } else if (await NotificationUtil.instance.checkPermissions()) {
+    if (enableRemindNotification) {
+      NotificationUtil.instance.enableRemindNotification();
+    }
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -71,20 +107,17 @@ class AppLifecycleService extends GetxService with WidgetsBindingObserver {
   @override
   void onInit() {
     super.onInit();
-    print("AppLifecycleService onInit");
     WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void onClose() {
-    print("AppLifecycleService onClose");
     WidgetsBinding.instance.removeObserver(this);
     super.onClose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    print("state: $state");
     if (state == AppLifecycleState.detached) {
       dbHelper.close();
     } else if (state == AppLifecycleState.resumed) {

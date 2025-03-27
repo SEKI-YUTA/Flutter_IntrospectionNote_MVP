@@ -58,22 +58,6 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
     );
   }
 
-  Widget _buildHeader() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Text(
-          '内省ノート',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF0F766E),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildSwitchViewMode(IntrospectionListScreenController controller) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
