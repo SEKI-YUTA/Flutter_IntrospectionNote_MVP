@@ -26,11 +26,11 @@ class IntrospectionCard extends StatelessWidget {
     final weekdayFormat = DateFormat('（E）', 'ja_JP');
     final formattedDate =
         '${dateFormat.format(note.date)}${weekdayFormat.format(note.date)}';
-    bool _isDarkTheme = isDarkTheme(context);
+    bool isDarkTheme = checkIsDarkTheme(context);
 
     return Container(
       decoration: BoxDecoration(
-        color: _isDarkTheme ? const Color(0xFF1F2937) : Colors.white,
+        color: isDarkTheme ? const Color(0xFF1F2937) : Colors.white,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: const Color(0xFFE4E4E7), width: 1),
         boxShadow: [
@@ -49,7 +49,7 @@ class IntrospectionCard extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors:
-                    _isDarkTheme
+                    isDarkTheme
                         ? [Color(0xFF1B1B1B), Colors.black]
                         : [Color(0xFFF0FDFA), Colors.white],
                 begin: Alignment.centerLeft,
