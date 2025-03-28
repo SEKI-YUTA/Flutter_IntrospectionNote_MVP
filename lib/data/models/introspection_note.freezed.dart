@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$IntrospectionNote {
 
-@JsonKey(name: 'id') String? get id;@JsonKey(name: 'date', fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) DateTime get date;@JsonKey(name: 'positive_items', fromJson: _listFromJson, toJson: _listToJson) List<String> get positiveItems;@JsonKey(name: 'improvement_items', fromJson: _listFromJson, toJson: _listToJson) List<String> get improvementItems;@JsonKey(name: 'daily_comment') String get dailyComment;
+@JsonKey(name: IntrospectionNoteColumnNames.id) String? get id;@JsonKey(name: IntrospectionNoteColumnNames.date, fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) DateTime get date;@JsonKey(name: IntrospectionNoteColumnNames.positiveItems, fromJson: _listFromJson, toJson: _listToJson) List<String> get positiveItems;@JsonKey(name: IntrospectionNoteColumnNames.improvementItems, fromJson: _listFromJson, toJson: _listToJson) List<String> get improvementItems;@JsonKey(name: IntrospectionNoteColumnNames.dailyComment) String get dailyComment;
 /// Create a copy of IntrospectionNote
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $IntrospectionNoteCopyWith<$Res>  {
   factory $IntrospectionNoteCopyWith(IntrospectionNote value, $Res Function(IntrospectionNote) _then) = _$IntrospectionNoteCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'id') String? id,@JsonKey(name: 'date', fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) DateTime date,@JsonKey(name: 'positive_items', fromJson: _listFromJson, toJson: _listToJson) List<String> positiveItems,@JsonKey(name: 'improvement_items', fromJson: _listFromJson, toJson: _listToJson) List<String> improvementItems,@JsonKey(name: 'daily_comment') String dailyComment
+@JsonKey(name: IntrospectionNoteColumnNames.id) String? id,@JsonKey(name: IntrospectionNoteColumnNames.date, fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) DateTime date,@JsonKey(name: IntrospectionNoteColumnNames.positiveItems, fromJson: _listFromJson, toJson: _listToJson) List<String> positiveItems,@JsonKey(name: IntrospectionNoteColumnNames.improvementItems, fromJson: _listFromJson, toJson: _listToJson) List<String> improvementItems,@JsonKey(name: IntrospectionNoteColumnNames.dailyComment) String dailyComment
 });
 
 
@@ -84,26 +84,26 @@ as String,
 @JsonSerializable()
 
 class _IntrospectionNote implements IntrospectionNote {
-  const _IntrospectionNote({@JsonKey(name: 'id') this.id, @JsonKey(name: 'date', fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) required this.date, @JsonKey(name: 'positive_items', fromJson: _listFromJson, toJson: _listToJson) required final  List<String> positiveItems, @JsonKey(name: 'improvement_items', fromJson: _listFromJson, toJson: _listToJson) required final  List<String> improvementItems, @JsonKey(name: 'daily_comment') required this.dailyComment}): _positiveItems = positiveItems,_improvementItems = improvementItems;
+  const _IntrospectionNote({@JsonKey(name: IntrospectionNoteColumnNames.id) this.id, @JsonKey(name: IntrospectionNoteColumnNames.date, fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) required this.date, @JsonKey(name: IntrospectionNoteColumnNames.positiveItems, fromJson: _listFromJson, toJson: _listToJson) required final  List<String> positiveItems, @JsonKey(name: IntrospectionNoteColumnNames.improvementItems, fromJson: _listFromJson, toJson: _listToJson) required final  List<String> improvementItems, @JsonKey(name: IntrospectionNoteColumnNames.dailyComment) required this.dailyComment}): _positiveItems = positiveItems,_improvementItems = improvementItems;
   factory _IntrospectionNote.fromJson(Map<String, dynamic> json) => _$IntrospectionNoteFromJson(json);
 
-@override@JsonKey(name: 'id') final  String? id;
-@override@JsonKey(name: 'date', fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) final  DateTime date;
+@override@JsonKey(name: IntrospectionNoteColumnNames.id) final  String? id;
+@override@JsonKey(name: IntrospectionNoteColumnNames.date, fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) final  DateTime date;
  final  List<String> _positiveItems;
-@override@JsonKey(name: 'positive_items', fromJson: _listFromJson, toJson: _listToJson) List<String> get positiveItems {
+@override@JsonKey(name: IntrospectionNoteColumnNames.positiveItems, fromJson: _listFromJson, toJson: _listToJson) List<String> get positiveItems {
   if (_positiveItems is EqualUnmodifiableListView) return _positiveItems;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_positiveItems);
 }
 
  final  List<String> _improvementItems;
-@override@JsonKey(name: 'improvement_items', fromJson: _listFromJson, toJson: _listToJson) List<String> get improvementItems {
+@override@JsonKey(name: IntrospectionNoteColumnNames.improvementItems, fromJson: _listFromJson, toJson: _listToJson) List<String> get improvementItems {
   if (_improvementItems is EqualUnmodifiableListView) return _improvementItems;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_improvementItems);
 }
 
-@override@JsonKey(name: 'daily_comment') final  String dailyComment;
+@override@JsonKey(name: IntrospectionNoteColumnNames.dailyComment) final  String dailyComment;
 
 /// Create a copy of IntrospectionNote
 /// with the given fields replaced by the non-null parameter values.
@@ -138,7 +138,7 @@ abstract mixin class _$IntrospectionNoteCopyWith<$Res> implements $Introspection
   factory _$IntrospectionNoteCopyWith(_IntrospectionNote value, $Res Function(_IntrospectionNote) _then) = __$IntrospectionNoteCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'id') String? id,@JsonKey(name: 'date', fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) DateTime date,@JsonKey(name: 'positive_items', fromJson: _listFromJson, toJson: _listToJson) List<String> positiveItems,@JsonKey(name: 'improvement_items', fromJson: _listFromJson, toJson: _listToJson) List<String> improvementItems,@JsonKey(name: 'daily_comment') String dailyComment
+@JsonKey(name: IntrospectionNoteColumnNames.id) String? id,@JsonKey(name: IntrospectionNoteColumnNames.date, fromJson: _dateTimeFromJson, toJson: _dateTimeToJson) DateTime date,@JsonKey(name: IntrospectionNoteColumnNames.positiveItems, fromJson: _listFromJson, toJson: _listToJson) List<String> positiveItems,@JsonKey(name: IntrospectionNoteColumnNames.improvementItems, fromJson: _listFromJson, toJson: _listToJson) List<String> improvementItems,@JsonKey(name: IntrospectionNoteColumnNames.dailyComment) String dailyComment
 });
 
 
