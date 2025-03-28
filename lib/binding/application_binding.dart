@@ -1,6 +1,6 @@
 // GetXでの利用方法の例（初期化部分）
 import 'package:get/get.dart';
-import 'package:introspection_note_mvp/data/db/DatabaseHelper.dart';
+import 'package:introspection_note_mvp/data/db/database_helper.dart';
 import 'package:introspection_note_mvp/data/repositories/note_repository.dart';
 import 'package:introspection_note_mvp/main.dart';
 

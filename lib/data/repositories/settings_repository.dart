@@ -1,4 +1,4 @@
-import 'package:introspection_note_mvp/data/sharedpref/SharedPreferenceHelper.dart';
+import 'package:introspection_note_mvp/data/sharedpref/shared_preference_helper.dart';
 
 class SettingsRepository {
   final SharedpreferenceHelper sharedpreferencehelper;

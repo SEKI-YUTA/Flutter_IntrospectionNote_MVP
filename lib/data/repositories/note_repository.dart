@@ -1,5 +1,5 @@
 import 'package:introspection_note_mvp/constant/constant.dart';
-import 'package:introspection_note_mvp/data/db/DatabaseHelper.dart';
+import 'package:introspection_note_mvp/data/db/database_helper.dart';
 import 'package:introspection_note_mvp/data/models/introspection_note.dart';
 import 'package:sqflite/sqflite.dart';
 

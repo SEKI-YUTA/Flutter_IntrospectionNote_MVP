@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:introspection_note_mvp/data/repositories/settings_repository.dart';
-import 'package:introspection_note_mvp/data/sharedpref/SharedPreferenceHelper.dart';
+import 'package:introspection_note_mvp/data/sharedpref/shared_preference_helper.dart';
 import 'package:introspection_note_mvp/util/notification_util.dart';
 import 'package:permission_handler/permission_handler.dart';
 

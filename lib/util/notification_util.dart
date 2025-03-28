@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:introspection_note_mvp/data/sharedpref/SharedPreferenceHelper.dart';
+import 'package:introspection_note_mvp/data/sharedpref/shared_preference_helper.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:timezone/timezone.dart' as tz;
 
