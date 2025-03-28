@@ -14,7 +14,7 @@ class NoteRepositoryImpl extends NoteRepository {
   final DatabaseHelper dbHelper;
 
   NoteRepositoryImpl({DatabaseHelper? dbHelper})
-    : this.dbHelper = dbHelper ?? DatabaseHelper.instance;
+    : dbHelper = dbHelper ?? DatabaseHelper.instance;
 
   @override
   Future<List<IntrospectionNote>> fetchNotes() async {
