@@ -183,7 +183,7 @@ class CreateIntrospectionPage
 
               if (controller.isSaving)
                 Container(
-                  color: Colors.black.withOpacity(0.3),
+                  color: Colors.black.withValues(alpha: 0.3),
                   child: const Center(
                     child: CircularProgressIndicator(color: Color(0xFF0D9488)),
                   ),
