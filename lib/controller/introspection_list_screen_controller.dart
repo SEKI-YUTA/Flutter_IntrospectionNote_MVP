@@ -10,7 +10,7 @@ class IntrospectionListScreenController extends GetxController {
   final _notes = <IntrospectionNote>[].obs;
   final _filteredNotes = <IntrospectionNote>[].obs;
   final _isLoading = true.obs;
-  final _viewMode = ViewMode.List.obs;
+  final _viewMode = ViewMode.list.obs;
   final _selectedDate = DateTime.now().obs;
   final Rx<IntrospectionNote?> _manipulatingNote = Rx<IntrospectionNote?>(null);
   List<IntrospectionNote> get notes => _notes.toList();
@@ -97,7 +97,7 @@ class IntrospectionListScreenController extends GetxController {
 
   void changeViewMode(ViewMode mode) {
     _viewMode.value = mode;
-    if (mode == ViewMode.Calendar) {
+    if (mode == ViewMode.calendar) {
       filterNotesByDate(_selectedDate.value);
     }
   }
@@ -122,4 +122,4 @@ class IntrospectionListScreenController extends GetxController {
   }
 }
 
-enum ViewMode { List, Calendar }
+enum ViewMode { list, calendar }

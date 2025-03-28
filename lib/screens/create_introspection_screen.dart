@@ -32,7 +32,7 @@ class CreateIntrospectionPage
 
   @override
   Widget build(BuildContext context) {
-    bool _isDarkTheme = isDarkTheme(context);
+    bool isDarkTheme = checkIsDarkTheme(context);
     IntrospectionColor introspectionColor = getFormColorScheme(context);
     return Scaffold(
       body: SafeArea(
@@ -44,7 +44,7 @@ class CreateIntrospectionPage
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildHeader(_isDarkTheme),
+                    _buildHeader(isDarkTheme),
                     const SizedBox(height: 16),
 
                     Card(
@@ -71,7 +71,7 @@ class CreateIntrospectionPage
                                       fontWeight: FontWeight.w500,
                                       letterSpacing: -0.5,
                                       color:
-                                          _isDarkTheme
+                                          isDarkTheme
                                               ? Colors.white
                                               : Colors.black,
                                     ),
@@ -183,7 +183,7 @@ class CreateIntrospectionPage
 
               if (controller.isSaving)
                 Container(
-                  color: Colors.black.withOpacity(0.3),
+                  color: Colors.black.withValues(alpha: 0.3),
                   child: const Center(
                     child: CircularProgressIndicator(color: Color(0xFF0D9488)),
                   ),

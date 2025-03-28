@@ -37,7 +37,7 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
                 _buildSwitchViewMode(controller),
                 controller.isLoading
                     ? _buildLoading()
-                    : controller.viewMode == ViewMode.List
+                    : controller.viewMode == ViewMode.list
                     ? _buildListView(
                       controller.notes,
                       controller.manipulatingNote,
@@ -65,13 +65,13 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
         IconButton(
           onPressed: () {
             controller.changeViewMode(
-              controller.viewMode == ViewMode.List
-                  ? ViewMode.Calendar
-                  : ViewMode.List,
+              controller.viewMode == ViewMode.list
+                  ? ViewMode.calendar
+                  : ViewMode.list,
             );
           },
           icon: Icon(
-            controller.viewMode == ViewMode.List
+            controller.viewMode == ViewMode.list
                 ? Icons.list
                 : Icons.calendar_today,
           ),

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:introspection_note_mvp/data/sharedpref/SharedPreferenceHelper.dart';
+import 'package:introspection_note_mvp/data/sharedpref/shared_preference_helper.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -41,7 +41,6 @@ class NotificationUtil {
           await androidImplementation?.requestExactAlarmsPermission() ?? false;
       result = result1 && result2;
     }
-    print("requestPermissions: $result");
     return result ?? false;
   }
 
@@ -113,7 +112,6 @@ class NotificationUtil {
   ) async {
     final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     tz.TZDateTime scheduledDate = _getNextDateTime(hour, minute);
-    print(scheduledDate);
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
           'scheduled_channel',
@@ -148,7 +146,6 @@ class NotificationUtil {
   }
 
   Future<void> enableRemindNotification() async {
-    print("enableRemindNotification");
     String remindTime = await SharedpreferenceHelper.instance.getString(
       SharedpreferenceHelper.SETTING_PUSH_NOTIFICATION_TIME,
     );
@@ -156,11 +153,9 @@ class NotificationUtil {
     if (time.length != 2) {
       time = ["20", "00"];
     }
-    print(time);
     int notificationId = await SharedpreferenceHelper.instance.getInt(
       SharedpreferenceHelper.SETTING_PUSH_NOTIFICATION_ID,
     );
-    print(notificationId);
     NotificationUtil.instance.showScheduledNotification(
       notificationId,
       int.parse(time[0]),
@@ -213,10 +208,8 @@ class NotificationUtil {
       // iOS / MacOS の通知権限
       var status = await Permission.notification.status;
       if (status == PermissionStatus.granted) {
-        print("✅ iOS: 通知権限が許可されています");
         return true;
       } else {
-        print("❌ iOS: 通知権限が拒否されています");
         return false;
       }
     }
@@ -228,10 +221,8 @@ class NotificationUtil {
       if (await _isAndroid12OrHigher()) {
         bool exactAlarmGranted = await Permission.scheduleExactAlarm.isGranted;
         if (notificationGranted && exactAlarmGranted) {
-          print("✅ Android: 通知権限と正確なアラーム権限が許可されています");
           return true;
         } else {
-          print("❌ Android: 通知権限または正確なアラーム権限が拒否されています");
           return false;
         }
       }

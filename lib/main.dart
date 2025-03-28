@@ -6,8 +6,8 @@ import 'package:introspection_note_mvp/binding/application_binding.dart';
 import 'package:introspection_note_mvp/binding/create_introspection_screen_binding.dart';
 import 'package:introspection_note_mvp/binding/introspection_screen_binding.dart';
 import 'package:introspection_note_mvp/binding/setting_screen_binding.dart';
-import 'package:introspection_note_mvp/data/db/DatabaseHelper.dart';
-import 'package:introspection_note_mvp/data/sharedpref/SharedPreferenceHelper.dart';
+import 'package:introspection_note_mvp/data/db/database_helper.dart';
+import 'package:introspection_note_mvp/data/sharedpref/shared_preference_helper.dart';
 import 'package:introspection_note_mvp/screens/create_introspection_screen.dart';
 import 'package:introspection_note_mvp/screens/introspection_list_screen.dart';
 import 'package:introspection_note_mvp/screens/license_screen.dart';
@@ -38,7 +38,6 @@ Future<void> setUpNotification() async {
       true,
     );
     final granted = await NotificationUtil.instance.requestPermissions();
-    print("granted: $granted");
     SharedpreferenceHelper.instance.setBool(
       SharedpreferenceHelper.SETTING_ENABLE_REMIND_NOTIFICATION,
       granted,
@@ -55,7 +54,7 @@ Future<void> setUpNotification() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
