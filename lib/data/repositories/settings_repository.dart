@@ -1,8 +1,8 @@
 import 'package:introspection_note_mvp/data/sharedpref/shared_preference_helper.dart';
 
 class SettingsRepository {
-  final SharedpreferenceHelper sharedpreferencehelper;
   SettingsRepository({required this.sharedpreferencehelper});
+  final SharedpreferenceHelper sharedpreferencehelper;
 
   Future<bool> getEnableRemindNotification() async {
     return await sharedpreferencehelper.getBool(

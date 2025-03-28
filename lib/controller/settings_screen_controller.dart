@@ -8,18 +8,18 @@ import 'package:permission_handler/permission_handler.dart';
 
 class SettingsScreenController extends GetxController
     with WidgetsBindingObserver {
-  final SettingsRepository repository;
-  final NotificationUtil notificationUtil;
   SettingsScreenController({
     required this.repository,
     required this.notificationUtil,
   });
+  final SettingsRepository repository;
+  final NotificationUtil notificationUtil;
 
   final _isLoading = false.obs;
   final _grantedNotificationPermission = false.obs;
   final _grantedExactAlarmPermission = false.obs;
   final _enabledRemindNotification = false.obs;
-  final _remindTime = "".obs;
+  final _remindTime = ''.obs;
   bool get isLoading => _isLoading.value;
   bool get grantedNotificationPermission =>
       _grantedNotificationPermission.value;
@@ -53,8 +53,8 @@ class SettingsScreenController extends GetxController
       final value = await SharedpreferenceHelper.instance.getString(
         SharedpreferenceHelper.SETTING_PUSH_NOTIFICATION_TIME,
       );
-      if (value == "") {
-        _remindTime.value = "20:00";
+      if (value == '') {
+        _remindTime.value = '20:00';
       } else {
         _remindTime.value = value;
       }
@@ -67,7 +67,7 @@ class SettingsScreenController extends GetxController
   }
 
   void navigateToLicenseScreen() {
-    Get.toNamed("/license");
+    Get.toNamed('/license');
   }
 
   Future<void> toggleRemindNotification(bool value) async {
@@ -77,10 +77,10 @@ class SettingsScreenController extends GetxController
       _enabledRemindNotification.value = value;
       if (value) {
         NotificationUtil.instance.enableRemindNotification();
-        Get.snackbar("設定", "リマインド通知を有効にしました");
+        Get.snackbar('設定', 'リマインド通知を有効にしました');
       } else {
         NotificationUtil.instance.disableRemindNotification();
-        Get.snackbar("設定", "リマインド通知を無効にしました");
+        Get.snackbar('設定', 'リマインド通知を無効にしました');
       }
     } catch (e) {
       e.printError();
@@ -91,8 +91,8 @@ class SettingsScreenController extends GetxController
   }
 
   Future<void> requestExactNotificationPermission() async {
-    var notification = await Permission.notification.request();
-    var exactAlarm = await Permission.scheduleExactAlarm.request();
+    final notification = await Permission.notification.request();
+    final exactAlarm = await Permission.scheduleExactAlarm.request();
     _grantedNotificationPermission.value =
         notification == PermissionStatus.granted;
     _grantedExactAlarmPermission.value = exactAlarm == PermissionStatus.granted;
@@ -100,25 +100,25 @@ class SettingsScreenController extends GetxController
   }
 
   Future<void> changeRemindTime() async {
-    var time = await showTimePicker(
+    final time = await showTimePicker(
       context: Get.context!,
       initialTime: TimeOfDay(
-        hour: int.parse(_remindTime.value.split(":")[0]),
-        minute: int.parse(_remindTime.value.split(":")[1]),
+        hour: int.parse(_remindTime.value.split(':')[0]),
+        minute: int.parse(_remindTime.value.split(':')[1]),
       ),
     );
     if (time != null) {
-      var formater = NumberFormat("00");
+      final formater = NumberFormat('00');
       _remindTime.value =
-          "${formater.format(time.hour)}:${formater.format(time.minute)}";
+          '${formater.format(time.hour)}:${formater.format(time.minute)}';
       SharedpreferenceHelper.instance.setString(
         SharedpreferenceHelper.SETTING_PUSH_NOTIFICATION_TIME,
         _remindTime.value,
       );
       update();
-      bool enableRemindNotification = await SharedpreferenceHelper.instance
+      final bool enableRemindNotification = await SharedpreferenceHelper.instance
           .getBool(SharedpreferenceHelper.SETTING_ENABLE_REMIND_NOTIFICATION);
-      bool permissionGranted =
+      final bool permissionGranted =
           await NotificationUtil.instance.checkPermissions();
       if (enableRemindNotification && permissionGranted) {
         NotificationUtil.instance.disableRemindNotification();

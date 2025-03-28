@@ -11,10 +11,10 @@ class NoteRepository {
 }
 
 class NoteRepositoryImpl extends NoteRepository {
-  final DatabaseHelper dbHelper;
 
   NoteRepositoryImpl({DatabaseHelper? dbHelper})
     : dbHelper = dbHelper ?? DatabaseHelper.instance;
+  final DatabaseHelper dbHelper;
 
   @override
   Future<List<IntrospectionNote>> fetchNotes() async {

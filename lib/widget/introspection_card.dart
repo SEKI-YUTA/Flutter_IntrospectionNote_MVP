@@ -5,11 +5,6 @@ import 'package:introspection_note_mvp/data/models/introspection_note.dart';
 import 'package:introspection_note_mvp/util/util.dart';
 
 class IntrospectionCard extends StatelessWidget {
-  final IntrospectionNote note;
-  final IntrospectionColor introspectionColor;
-  final bool allowManipulation;
-  final VoidCallback onEdit;
-  final VoidCallback onDelete;
 
   const IntrospectionCard({
     super.key,
@@ -19,6 +14,11 @@ class IntrospectionCard extends StatelessWidget {
     required this.onEdit,
     required this.onDelete,
   });
+  final IntrospectionNote note;
+  final IntrospectionColor introspectionColor;
+  final bool allowManipulation;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class IntrospectionCard extends StatelessWidget {
     final weekdayFormat = DateFormat('（E）', 'ja_JP');
     final formattedDate =
         '${dateFormat.format(note.date)}${weekdayFormat.format(note.date)}';
-    bool isDarkTheme = checkIsDarkTheme(context);
+    final bool isDarkTheme = checkIsDarkTheme(context);
 
     return Container(
       decoration: BoxDecoration(
@@ -50,12 +50,12 @@ class IntrospectionCard extends StatelessWidget {
               gradient: LinearGradient(
                 colors:
                     isDarkTheme
-                        ? [Color(0xFF1B1B1B), Colors.black]
-                        : [Color(0xFFF0FDFA), Colors.white],
+                        ? [const Color(0xFF1B1B1B), Colors.black]
+                        : [const Color(0xFFF0FDFA), Colors.white],
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
               ),
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(8),
                 topRight: Radius.circular(8),
               ),
@@ -65,7 +65,7 @@ class IntrospectionCard extends StatelessWidget {
               children: [
                 Text(
                   formattedDate,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
                     letterSpacing: -0.5,
@@ -207,7 +207,7 @@ class IntrospectionCard extends StatelessWidget {
           ),
 
           Padding(
-            padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             child: Text(
               '1日の感想',
               style: TextStyle(

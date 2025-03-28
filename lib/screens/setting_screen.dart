@@ -11,7 +11,7 @@ class SettingsPage extends GetView<SettingsScreenController> {
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
-        appBar: AppBar(title: const Text("設定")),
+        appBar: AppBar(title: const Text('設定')),
         body: SafeArea(
           child: Opacity(
             opacity: controller.isLoading ? 0.5 : 1,
@@ -20,15 +20,15 @@ class SettingsPage extends GetView<SettingsScreenController> {
                 _buildRemindNotificationTile(),
 
                 _buildRemindTimeTile(),
-                Spacer(),
+                const Spacer(),
                 GestureDetector(
                   onTap: controller.navigateToLicenseScreen,
-                  child: SizedBox(
+                  child: const SizedBox(
                     width: double.infinity,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: EdgeInsets.symmetric(vertical: 16),
                       child: Text(
-                        "ライセンス",
+                        'ライセンス',
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 16),
                       ),
@@ -45,7 +45,7 @@ class SettingsPage extends GetView<SettingsScreenController> {
 
   Widget _buildRemindTimeTile() {
     return ListTile(
-      title: const Text("リマインドの時間"),
+      title: const Text('リマインドの時間'),
       trailing:
           controller.enabledRemindNotification
               ? GestureDetector(
@@ -54,7 +54,7 @@ class SettingsPage extends GetView<SettingsScreenController> {
                 },
                 child: Text(
                   controller.remindTime,
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
               )
               : null,
@@ -63,7 +63,7 @@ class SettingsPage extends GetView<SettingsScreenController> {
 
   Widget _buildRemindNotificationTile() {
     return ListTile(
-      title: const Text("内省のリマインド"),
+      title: const Text('内省のリマインド'),
       subtitle:
           controller.grantedNotificationPermission &&
                   (controller.grantedExactAlarmPermission || Platform.isIOS)
@@ -73,7 +73,7 @@ class SettingsPage extends GetView<SettingsScreenController> {
                   controller.requestExactNotificationPermission();
                 },
                 child: const Text(
-                  "通知の許可が必要です",
+                  '通知の許可が必要です',
                   style: TextStyle(color: Colors.red),
                 ),
               ),

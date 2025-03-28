@@ -5,7 +5,7 @@ class LicenseListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LicensePage(
+    return const LicensePage(
       applicationName: '内省ノート',
       applicationVersion: '1.0.0',
       applicationIcon: Icon(Icons.note), // アプリのアイコン

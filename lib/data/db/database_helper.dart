@@ -2,7 +2,10 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
-  static const _databaseName = "introspection_note.db";
+
+  // シングルトンパターン
+  DatabaseHelper._privateConstructor();
+  static const _databaseName = 'introspection_note.db';
   static const _databaseVersion = 1;
 
   static const table = 'notes';
@@ -12,9 +15,6 @@ class DatabaseHelper {
   static const columnPositiveItems = 'positive_items';
   static const columnImprovementItems = 'improvement_items';
   static const columnDailyComment = 'daily_comment';
-
-  // シングルトンパターン
-  DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
 
   // データベースインスタンス

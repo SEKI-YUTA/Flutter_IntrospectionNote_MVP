@@ -1,17 +1,17 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedpreferenceHelper {
-  static const String SETTING_ENABLE_REMIND_NOTIFICATION =
-      "introspection_note_mvp:setting_enable_remind_notification";
-  static final String SETTING_PUSH_NOTIFICATION_ID =
-      "introspection_note_mvp:setting_push_notification_id";
-  // 10:10のように文字列で保存しておく
-  static final String SETTING_PUSH_NOTIFICATION_TIME =
-      "introspection_note_mvp:setting_push_notification_time";
-  static final String PERMISSION_ALREADY_REQUESTED =
-      "introspection_note_mvp:permission_already_requested";
 
   SharedpreferenceHelper._privateConstructor();
+  static const String SETTING_ENABLE_REMIND_NOTIFICATION =
+      'introspection_note_mvp:setting_enable_remind_notification';
+  static const String SETTING_PUSH_NOTIFICATION_ID =
+      'introspection_note_mvp:setting_push_notification_id';
+  // 10:10のように文字列で保存しておく
+  static const String SETTING_PUSH_NOTIFICATION_TIME =
+      'introspection_note_mvp:setting_push_notification_time';
+  static const String PERMISSION_ALREADY_REQUESTED =
+      'introspection_note_mvp:permission_already_requested';
   static final SharedpreferenceHelper instance =
       SharedpreferenceHelper._privateConstructor();
 
@@ -41,7 +41,7 @@ class SharedpreferenceHelper {
 
   Future<String> getString(String key) async {
     final prefs = await instance.prefs;
-    return prefs.getString(key) ?? "";
+    return prefs.getString(key) ?? '';
   }
 
   Future<bool> setString(String key, String value) async {

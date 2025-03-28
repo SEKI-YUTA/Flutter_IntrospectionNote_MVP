@@ -34,10 +34,10 @@ class NotificationUtil {
               .resolvePlatformSpecificImplementation<
                 AndroidFlutterLocalNotificationsPlugin
               >();
-      bool result1 =
+      final bool result1 =
           await androidImplementation?.requestNotificationsPermission() ??
           false;
-      bool result2 =
+      final bool result2 =
           await androidImplementation?.requestExactAlarmsPermission() ?? false;
       result = result1 && result2;
     }
@@ -50,7 +50,7 @@ class NotificationUtil {
         AndroidInitializationSettings('@mipmap/ic_launcher'); // アプリのアイコンを使用
 
     // iOSの初期設定
-    final DarwinInitializationSettings initializationSettingsIOS =
+    const DarwinInitializationSettings initializationSettingsIOS =
         DarwinInitializationSettings(
           requestAlertPermission: true, // アラート許可を要求
           requestBadgePermission: true, // バッジ許可を要求
@@ -58,7 +58,7 @@ class NotificationUtil {
         );
 
     // 初期化設定を作成
-    final InitializationSettings initializationSettings =
+    const InitializationSettings initializationSettings =
         InitializationSettings(
           android: initializationSettingsAndroid,
           iOS: initializationSettingsIOS,
@@ -111,7 +111,7 @@ class NotificationUtil {
     int minute,
   ) async {
     final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    tz.TZDateTime scheduledDate = _getNextDateTime(hour, minute);
+    final tz.TZDateTime scheduledDate = _getNextDateTime(hour, minute);
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
           'scheduled_channel',
@@ -146,14 +146,14 @@ class NotificationUtil {
   }
 
   Future<void> enableRemindNotification() async {
-    String remindTime = await SharedpreferenceHelper.instance.getString(
+    final String remindTime = await SharedpreferenceHelper.instance.getString(
       SharedpreferenceHelper.SETTING_PUSH_NOTIFICATION_TIME,
     );
-    List<String> time = remindTime.split(":");
+    List<String> time = remindTime.split(':');
     if (time.length != 2) {
-      time = ["20", "00"];
+      time = ['20', '00'];
     }
-    int notificationId = await SharedpreferenceHelper.instance.getInt(
+    final int notificationId = await SharedpreferenceHelper.instance.getInt(
       SharedpreferenceHelper.SETTING_PUSH_NOTIFICATION_ID,
     );
     NotificationUtil.instance.showScheduledNotification(
@@ -164,7 +164,7 @@ class NotificationUtil {
   }
 
   Future<void> disableRemindNotification() async {
-    int notificationId = await SharedpreferenceHelper.instance.getInt(
+    final int notificationId = await SharedpreferenceHelper.instance.getInt(
       SharedpreferenceHelper.SETTING_PUSH_NOTIFICATION_ID,
     );
     NotificationUtil.instance.cancelNotification(notificationId);
@@ -206,7 +206,7 @@ class NotificationUtil {
   Future<bool> checkPermissions() async {
     if (Platform.isIOS || Platform.isMacOS) {
       // iOS / MacOS の通知権限
-      var status = await Permission.notification.status;
+      final status = await Permission.notification.status;
       if (status == PermissionStatus.granted) {
         return true;
       } else {
@@ -216,10 +216,10 @@ class NotificationUtil {
 
     if (Platform.isAndroid) {
       // Android の通知権限
-      bool notificationGranted = await Permission.notification.isGranted;
+      final bool notificationGranted = await Permission.notification.isGranted;
       // Android 12以降の場合は正確なアラーム権限も確認
       if (await _isAndroid12OrHigher()) {
-        bool exactAlarmGranted = await Permission.scheduleExactAlarm.isGranted;
+        final bool exactAlarmGranted = await Permission.scheduleExactAlarm.isGranted;
         if (notificationGranted && exactAlarmGranted) {
           return true;
         } else {
@@ -234,8 +234,8 @@ class NotificationUtil {
   /// Android 12以上か判定
   Future<bool> _isAndroid12OrHigher() async {
     if (!Platform.isAndroid) return false;
-    var plugin = DeviceInfoPlugin();
-    var androidInfo = await plugin.androidInfo;
+    final plugin = DeviceInfoPlugin();
+    final androidInfo = await plugin.androidInfo;
     return androidInfo.version.sdkInt >= 31; // Android 12: API 31
   }
 }
