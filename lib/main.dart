@@ -46,6 +46,9 @@ Future<void> setUpNotification() async {
       SharedpreferenceHelper.PERMISSION_ALREADY_REQUESTED,
       true,
     );
+    if(granted) {
+      NotificationUtil.instance.enableRemindNotification();
+    }
   } else if (await NotificationUtil.instance.checkPermissions()) {
     if (enableRemindNotification) {
       NotificationUtil.instance.enableRemindNotification();
