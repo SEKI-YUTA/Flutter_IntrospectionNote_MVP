@@ -38,7 +38,6 @@ Future<void> setUpNotification() async {
       true,
     );
     final granted = await NotificationUtil.instance.requestPermissions();
-    print("granted: $granted");
     SharedpreferenceHelper.instance.setBool(
       SharedpreferenceHelper.SETTING_ENABLE_REMIND_NOTIFICATION,
       granted,

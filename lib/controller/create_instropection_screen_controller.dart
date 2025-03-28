@@ -54,7 +54,6 @@ class CreateInstropectionScreenController extends GetxController {
     dailyCommentController.text = "";
 
     if (Get.arguments != null && Get.arguments is Map) {
-      print("Get.arguments: ${Get.arguments}");
       final args = Get.arguments as Map;
       if (args.containsKey('introspection')) {
         _setupEditMode(args['introspection']);
