@@ -8,10 +8,10 @@ import 'package:introspection_note_mvp/data/repositories/note_repository.dart';
 import 'package:uuid/uuid.dart';
 
 class InstropectionItem {
-  final TextEditingController controller;
 
   InstropectionItem({String initialText = ''})
     : controller = TextEditingController(text: initialText);
+  final TextEditingController controller;
 
   void dispose() {
     controller.dispose();
@@ -19,8 +19,8 @@ class InstropectionItem {
 }
 
 class CreateInstropectionScreenController extends GetxController {
-  final NoteRepository repository;
   CreateInstropectionScreenController({required this.repository});
+  final NoteRepository repository;
 
   final _date = DateTime.now().obs;
   final _positiveTextControllers = <TextEditingController>[].obs;
@@ -51,7 +51,7 @@ class CreateInstropectionScreenController extends GetxController {
 
     _improvementTextControllers.add(TextEditingController());
 
-    dailyCommentController.text = "";
+    dailyCommentController.text = '';
 
     if (Get.arguments != null && Get.arguments is Map) {
       final args = Get.arguments as Map;
@@ -189,7 +189,7 @@ class CreateInstropectionScreenController extends GetxController {
       if (_isEditMode.value && editId != null) {
         introspectionData[IntrospectionNoteColumnNames.id] = editId!;
       } else {
-        introspectionData[IntrospectionNoteColumnNames.id] = Uuid().v6();
+        introspectionData[IntrospectionNoteColumnNames.id] = const Uuid().v6();
       }
 
       if (introspectionData[IntrospectionNoteColumnNames.date] is DateTime) {

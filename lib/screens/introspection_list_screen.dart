@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:introspection_note_mvp/controller/introspection_list_screen_controller.dart';
 import 'package:introspection_note_mvp/data/models/create_from_color_scheme.dart';
 import 'package:introspection_note_mvp/data/models/introspection_note.dart';
-import 'package:introspection_note_mvp/controller/introspection_list_screen_controller.dart';
 import 'package:introspection_note_mvp/util/util.dart';
 import 'package:introspection_note_mvp/widget/introspection_card.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -12,10 +12,10 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
 
   @override
   Widget build(BuildContext context) {
-    IntrospectionColor introspectionColor = getFormColorScheme(context);
+    final IntrospectionColor introspectionColor = getFormColorScheme(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("内省ノート"),
+        title: const Text('内省ノート'),
         actions: [
           IconButton(
             onPressed: controller.navigateToSettingsScreen,
@@ -106,9 +106,9 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
                   );
                 },
               )
-              : Center(
+              : const Center(
                 child: Text(
-                  "内省がまだありません。\n右下のボタンから追加してください。",
+                  '内省がまだありません。\n右下のボタンから追加してください。',
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -136,11 +136,11 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
               ? Container(
                 height: 100, // 空の場合の最小高さを指定
                 alignment: Alignment.center,
-                child: Text("内省がありません"),
+                child: const Text('内省がありません'),
               )
               : ListView.builder(
                 shrinkWrap: true, // これが重要
-                physics: NeverScrollableScrollPhysics(), // 親のスクロールを使用
+                physics: const NeverScrollableScrollPhysics(), // 親のスクロールを使用
                 itemCount: controller.filteredNotes.length,
                 itemBuilder: (context, index) {
                   final note = controller.filteredNotes[index];

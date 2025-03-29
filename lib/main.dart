@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:introspection_note_mvp/binding/application_binding.dart';
 import 'package:introspection_note_mvp/binding/create_introspection_screen_binding.dart';
 import 'package:introspection_note_mvp/binding/introspection_screen_binding.dart';
@@ -20,7 +20,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('ja_JP');
   tz.initializeTimeZones();
-  tz.setLocalLocation(tz.getLocation("Asia/Tokyo"));
+  tz.setLocalLocation(tz.getLocation('Asia/Tokyo'));
   await setUpNotification();
   runApp(const MyApp());
 }
@@ -62,35 +62,35 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: "内省ノート",
-      initialRoute: "/introspection_list",
+      title: '内省ノート',
+      initialRoute: '/introspection_list',
       initialBinding: ApplicationBinding(),
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF0F766E)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF0F766E)),
       ),
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Color(0xFF0F766E),
+          seedColor: const Color(0xFF0F766E),
           brightness: Brightness.dark,
         ),
       ),
       getPages: [
         GetPage(
-          name: "/introspection_list",
-          page: () => IntrospectionListPage(),
+          name: '/introspection_list',
+          page: () => const IntrospectionListPage(),
           binding: IntrospectionListScreenBinding(),
         ),
         GetPage(
-          name: "/create_introspection",
-          page: () => CreateIntrospectionPage(),
+          name: '/create_introspection',
+          page: () => const CreateIntrospectionPage(),
           binding: CreateIntrospectionBinding(),
         ),
         GetPage(
-          name: "/settings",
-          page: () => SettingsPage(),
+          name: '/settings',
+          page: () => const SettingsPage(),
           binding: SettingScreenBinding(),
         ),
-        GetPage(name: "/license", page: () => const LicenseListPage()),
+        GetPage(name: '/license', page: () => const LicenseListPage()),
       ],
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,

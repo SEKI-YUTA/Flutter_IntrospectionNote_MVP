@@ -4,8 +4,8 @@ import 'package:introspection_note_mvp/data/models/introspection_note.dart';
 import 'package:introspection_note_mvp/data/repositories/note_repository.dart';
 
 class IntrospectionListScreenController extends GetxController {
-  final NoteRepository repository;
   IntrospectionListScreenController({required this.repository});
+  final NoteRepository repository;
 
   final _notes = <IntrospectionNote>[].obs;
   final _filteredNotes = <IntrospectionNote>[].obs;
@@ -42,20 +42,20 @@ class IntrospectionListScreenController extends GetxController {
   }
 
   void navigateToSettingsScreen() {
-    Get.toNamed("/settings");
+    Get.toNamed('/settings');
   }
 
   Future<void> navigateToCreateIntrospectionScreen() async {
-    final result = await Get.toNamed("/create_introspection");
+    final result = await Get.toNamed('/create_introspection');
     if (result != null) {
       await readNotes();
     }
   }
 
   Future<void> edit(IntrospectionNote note) async {
-    var mapData = note.toJson();
+    final mapData = note.toJson();
     final result = await Get.toNamed(
-      "/create_introspection",
+      '/create_introspection',
       arguments: {'introspection': mapData},
     );
     if (result != null) {
@@ -66,12 +66,12 @@ class IntrospectionListScreenController extends GetxController {
   Future<void> delete(IntrospectionNote note) async {
     Get.dialog(
       AlertDialog(
-        title: Text("確認"),
-        content: Text("本当に削除してもよろしいですか？"),
+        title: const Text('確認'),
+        content: const Text('本当に削除してもよろしいですか？'),
         actions: [
-          TextButton(child: Text("キャンセル"), onPressed: () => Get.back()),
+          TextButton(child: const Text('キャンセル'), onPressed: () => Get.back()),
           TextButton(
-            child: Text("削除"),
+            child: const Text('削除'),
             onPressed: () async {
               _manipulatingNote.value = note;
               try {
@@ -79,10 +79,10 @@ class IntrospectionListScreenController extends GetxController {
                 Get.back(closeOverlays: true);
                 await request;
                 _notes.remove(note);
-                Get.snackbar("完了", "項目が削除されました");
+                Get.snackbar('完了', '項目が削除されました');
               } catch (e) {
                 e.printError();
-                Get.snackbar("エラー", "削除に失敗しました");
+                Get.snackbar('エラー', '削除に失敗しました');
               } finally {
                 update();
               }

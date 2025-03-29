@@ -13,7 +13,7 @@ class CreateIntrospectionPage
     final firstDate = now.subtract(const Duration(days: 30));
     try {
       final DateTime? picked = await showDatePicker(
-        locale: const Locale("ja"),
+        locale: const Locale('ja'),
         context: Get.context!,
         firstDate: firstDate,
         lastDate: now,
@@ -32,8 +32,8 @@ class CreateIntrospectionPage
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkTheme = checkIsDarkTheme(context);
-    IntrospectionColor introspectionColor = getFormColorScheme(context);
+    final bool isDarkTheme = checkIsDarkTheme(context);
+    final IntrospectionColor introspectionColor = getFormColorScheme(context);
     return Scaffold(
       body: SafeArea(
         child: Obx(() {
@@ -76,14 +76,14 @@ class CreateIntrospectionPage
                                               : Colors.black,
                                     ),
                                   ),
-                                  Icon(Icons.arrow_drop_down_rounded),
+                                  const Icon(Icons.arrow_drop_down_rounded),
                                 ],
                               ),
                             ),
                             const SizedBox(height: 24),
 
                             Text(
-                              "良かった点",
+                              '良かった点',
                               style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 14,
@@ -100,13 +100,13 @@ class CreateIntrospectionPage
 
                             _buildAddItemButton(
                               onPressed: controller.addPositiveItem,
-                              labelText: "項目を追加",
+                              labelText: '項目を追加',
                               color: const Color(0xFF059669),
                             ),
                             const SizedBox(height: 24),
 
                             Text(
-                              "改善点",
+                              '改善点',
                               style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 14,
@@ -124,13 +124,13 @@ class CreateIntrospectionPage
 
                             _buildAddItemButton(
                               onPressed: controller.addImprovementItem,
-                              labelText: "項目を追加",
+                              labelText: '項目を追加',
                               color: const Color(0xFFD97706),
                             ),
                             const SizedBox(height: 24),
 
                             Text(
-                              "1日の感想",
+                              '1日の感想',
                               style: TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 14,
@@ -164,7 +164,7 @@ class CreateIntrospectionPage
                                   ).withValues(alpha: 0.5),
                                 ),
                                 child: Text(
-                                  controller.isEditMode ? "更新する" : "保存する",
+                                  controller.isEditMode ? '更新する' : '保存する',
                                   style: const TextStyle(
                                     fontFamily: 'Inter',
                                     fontSize: 14,
@@ -210,8 +210,8 @@ class CreateIntrospectionPage
         const SizedBox(width: 8),
 
         Text(
-          controller.isEditMode ? "内省の編集" : "内省の記録",
-          style: TextStyle(
+          controller.isEditMode ? '内省の編集' : '内省の記録',
+          style: const TextStyle(
             fontFamily: 'Inter',
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -234,7 +234,7 @@ class CreateIntrospectionPage
                   controller: controller.positiveItems[i],
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(12),
-                    hintText: "良かったことを入力",
+                    hintText: '良かったことを入力',
                     hintStyle: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 14,
@@ -279,7 +279,7 @@ class CreateIntrospectionPage
                   controller: controller.improvementItems[i],
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(12),
-                    hintText: "改善点を入力",
+                    hintText: '改善点を入力',
                     hintStyle: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 14,
@@ -317,7 +317,7 @@ class CreateIntrospectionPage
       controller: controller.dailyCommentController,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(12),
-        hintText: "感想を入力",
+        hintText: '感想を入力',
         hintStyle: const TextStyle(
           fontFamily: 'Inter',
           fontSize: 14,
