@@ -3,14 +3,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:introspection_note_mvp/binding/application_binding.dart';
-import 'package:introspection_note_mvp/binding/create_introspection_screen_binding.dart';
 import 'package:introspection_note_mvp/binding/introspection_screen_binding.dart';
+import 'package:introspection_note_mvp/binding/modify_introspection_screen_binding.dart';
 import 'package:introspection_note_mvp/binding/setting_screen_binding.dart';
 import 'package:introspection_note_mvp/data/db/database_helper.dart';
 import 'package:introspection_note_mvp/data/sharedpref/shared_preference_helper.dart';
-import 'package:introspection_note_mvp/screens/create_introspection_screen.dart';
 import 'package:introspection_note_mvp/screens/introspection_list_screen.dart';
 import 'package:introspection_note_mvp/screens/license_screen.dart';
+import 'package:introspection_note_mvp/screens/modify_introspection_screen.dart';
 import 'package:introspection_note_mvp/screens/setting_screen.dart';
 import 'package:introspection_note_mvp/util/notification_util.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -46,7 +46,7 @@ Future<void> setUpNotification() async {
       SharedpreferenceHelper.PERMISSION_ALREADY_REQUESTED,
       true,
     );
-    if(granted) {
+    if (granted) {
       NotificationUtil.instance.enableRemindNotification();
     }
   } else if (await NotificationUtil.instance.checkPermissions()) {

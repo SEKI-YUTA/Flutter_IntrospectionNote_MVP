@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:introspection_note_mvp/data/models/create_from_color_scheme.dart';
 import 'package:introspection_note_mvp/data/models/introspection_note.dart';
+import 'package:introspection_note_mvp/data/models/modify_form_color_scheme.dart';
 import 'package:introspection_note_mvp/util/util.dart';
 
 class IntrospectionCard extends StatelessWidget {
-
   const IntrospectionCard({
     super.key,
     required this.note,
