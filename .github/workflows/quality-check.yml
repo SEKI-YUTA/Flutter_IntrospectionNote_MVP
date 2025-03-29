@@ -1,4 +1,4 @@
-name: Flutter CI
+name: Quality Check
 
 on:
   push:
@@ -22,6 +22,16 @@ jobs:
         with:
           flutter-version: 3.x # 最新のFlutterバージョンを指定（適宜更新）
 
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pub-cache
+            build
+          key: ${{ runner.os }}-flutter-${{ hashFiles('pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-
+
       - name: Install dependencies
         run: flutter pub get
 
@@ -42,11 +52,25 @@ jobs:
         with:
           flutter-version: 3.x
 
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pub-cache
+            build
+          key: ${{ runner.os }}-flutter-${{ hashFiles('pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-
+
       - name: Install dependencies
         run: flutter pub get
 
       - name: Build APK
         run: flutter build apk
+
+      - name: Debug APK Build Logs
+        if: failure()
+        run: cat build/app/outputs/flutter-apk/*.log || echo "No logs found"
 
   build_ios:
     name: Build iOS
@@ -62,8 +86,22 @@ jobs:
         with:
           flutter-version: 3.x
 
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pub-cache
+            build
+          key: ${{ runner.os }}-flutter-${{ hashFiles('pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-
+
       - name: Install dependencies
         run: flutter pub get
 
       - name: Build iOS
         run: flutter build ios --no-codesign # CIではコード署名なしでビルド
+
+      - name: Debug iOS Build Logs
+        if: failure()
+        run: cat build/ios/Debug-iphoneos/*.log || echo "No logs found"
