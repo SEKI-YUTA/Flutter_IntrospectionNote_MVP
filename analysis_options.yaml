@@ -17,3 +17,4 @@ analyzer:
   errors:
     unused_import: error                # 未使用の import はエラーとして扱う
     invalid_annotation_target: ignore   # アノテーションの警告を無視
+    constant_identifier_names: ignore
