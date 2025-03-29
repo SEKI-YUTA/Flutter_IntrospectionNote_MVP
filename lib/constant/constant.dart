@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:introspection_note_mvp/data/models/create_from_color_scheme.dart';
 import 'package:introspection_note_mvp/data/models/introspection_note.dart';
+import 'package:introspection_note_mvp/data/models/modify_form_color_scheme.dart';
 import 'package:uuid/uuid.dart';
 
 final List<IntrospectionNote> notes = [

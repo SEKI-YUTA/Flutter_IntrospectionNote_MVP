@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:introspection_note_mvp/constant/constant.dart';
-import 'package:introspection_note_mvp/data/models/create_from_color_scheme.dart';
+import 'package:introspection_note_mvp/data/models/modify_form_color_scheme.dart';
 
 bool checkIsDarkTheme(BuildContext context) {
   return Theme.of(context).brightness == Brightness.dark;

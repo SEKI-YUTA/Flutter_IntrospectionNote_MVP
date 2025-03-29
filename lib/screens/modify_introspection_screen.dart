@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:introspection_note_mvp/controller/create_instropection_screen_controller.dart';
-import 'package:introspection_note_mvp/data/models/create_from_color_scheme.dart';
+import 'package:introspection_note_mvp/controller/modify_instropection_screen_controller.dart';
+import 'package:introspection_note_mvp/data/models/modify_form_color_scheme.dart';
 import 'package:introspection_note_mvp/util/util.dart';
 
 class CreateIntrospectionPage
