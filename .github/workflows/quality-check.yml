@@ -1,0 +1,69 @@
+name: Flutter CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  analyze:
+    name: Run Linter
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.x # 最新のFlutterバージョンを指定（適宜更新）
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run linter
+        run: flutter analyze
+
+  build_android:
+    name: Build Android
+    runs-on: ubuntu-latest
+    needs: analyze # Linterが通ったら実行
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.x
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk
+
+  build_ios:
+    name: Build iOS
+    runs-on: macos-latest
+    needs: analyze # Linterが通ったら実行
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.x
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build iOS
+        run: flutter build ios --no-codesign # CIではコード署名なしでビルド
