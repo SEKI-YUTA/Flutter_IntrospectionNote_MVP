@@ -13,6 +13,7 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
   @override
   Widget build(BuildContext context) {
     final IntrospectionColor introspectionColor = getFormColorScheme(context);
+    final bool isDarkTheme = checkIsDarkTheme(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('内省ノート'),
@@ -49,7 +50,7 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
                         controller.delete(note);
                       },
                     )
-                    : Expanded(child: _buildCalendarVIew()),
+                    : Expanded(child: _buildCalendarVIew(isDarkTheme)),
               ],
             ),
           ),
@@ -115,7 +116,7 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
     );
   }
 
-  Widget _buildCalendarVIew() {
+  Widget _buildCalendarVIew(bool isDarkTheme) {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -126,14 +127,30 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
               currentDay: controller.selectedDate,
               firstDay: DateTime.utc(2025, 3, 20),
               lastDay: DateTime.now(),
+              eventLoader:
+                  (day) =>
+                      controller.notes
+                          .where(
+                            (note) =>
+                                note.date.year == day.year &&
+                                note.date.month == day.month &&
+                                note.date.day == day.day,
+                          )
+                          .toList(),
               onDaySelected: (selectedDay, focusedDay) {
                 controller.changeSelectedDate(selectedDay);
               },
+              calendarStyle: CalendarStyle(
+                markerDecoration: BoxDecoration(
+                  color: isDarkTheme ? Colors.white : Colors.black,
+                  shape: BoxShape.circle,
+                ),
+              ),
               headerStyle: const HeaderStyle(
                 formatButtonVisible: false,
                 titleCentered: true,
               ),
-              locale: 'ja_JP'
+              locale: 'ja_JP',
             ),
           ),
           // Expandedを削除し、ListView.builderにshrinkWrapを適用
