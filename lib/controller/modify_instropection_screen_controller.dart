@@ -157,7 +157,7 @@ class CreateInstropectionScreenController extends GetxController {
         context: Get.context!,
         firstDate: firstDate,
         lastDate: now,
-        initialDate: now,
+        initialDate: isEditMode ? _date.value : now,
       );
 
       // ダイアログから戻った時点でコントローラーがまだ有効かチェック
