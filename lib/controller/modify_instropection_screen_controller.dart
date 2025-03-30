@@ -8,7 +8,6 @@ import 'package:introspection_note_mvp/data/repositories/note_repository.dart';
 import 'package:uuid/uuid.dart';
 
 class InstropectionItem {
-
   InstropectionItem({String initialText = ''})
     : controller = TextEditingController(text: initialText);
   final TextEditingController controller;
@@ -67,7 +66,9 @@ class CreateInstropectionScreenController extends GetxController {
 
     if (introspectionData[IntrospectionNoteColumnNames.date] != null &&
         introspectionData[IntrospectionNoteColumnNames.date] is String) {
-      final value = DateTime.parse(introspectionData[IntrospectionNoteColumnNames.date] as String);
+      final value = DateTime.parse(
+        introspectionData[IntrospectionNoteColumnNames.date] as String,
+      );
       _date.value = value;
     }
 
@@ -147,7 +148,7 @@ class CreateInstropectionScreenController extends GetxController {
     }
   }
 
-  Future<void> saveReflection() async {
+  Future<void> saveIntrospection() async {
     try {
       _isSaving.value = true;
 
@@ -194,7 +195,8 @@ class CreateInstropectionScreenController extends GetxController {
 
       if (introspectionData[IntrospectionNoteColumnNames.date] is DateTime) {
         introspectionData[IntrospectionNoteColumnNames.date] =
-            (introspectionData[IntrospectionNoteColumnNames.date] as DateTime).toIso8601String();
+            (introspectionData[IntrospectionNoteColumnNames.date] as DateTime)
+                .toIso8601String();
       }
 
       final note = IntrospectionNote.fromJson(introspectionData);

@@ -149,7 +149,7 @@ class CreateIntrospectionPage
                                 onPressed:
                                     controller.isSaving
                                         ? null
-                                        : controller.saveReflection,
+                                        : controller.saveIntrospection,
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFF0D9488),
                                   foregroundColor: const Color(0xFFFAFAFA),
