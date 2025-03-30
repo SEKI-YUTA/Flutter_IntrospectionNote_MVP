@@ -8,27 +8,7 @@ class CreateIntrospectionPage
     extends GetView<CreateInstropectionScreenController> {
   const CreateIntrospectionPage({super.key});
 
-  void _showDatePicker() async {
-    final now = DateTime.now();
-    final firstDate = now.subtract(const Duration(days: 30));
-    try {
-      final DateTime? picked = await showDatePicker(
-        locale: const Locale('ja'),
-        context: Get.context!,
-        firstDate: firstDate,
-        lastDate: now,
-        initialDate: now,
-      );
-
-      // ダイアログから戻った時点でコントローラーがまだ有効かチェック
-      if (picked != null &&
-          Get.isRegistered<CreateInstropectionScreenController>()) {
-        controller.setDate(picked);
-      }
-    } catch (e) {
-      e.printError();
-    }
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +40,7 @@ class CreateIntrospectionPage
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             GestureDetector(
-                              onTap: _showDatePicker,
+                              onTap: controller.changeDate,
                               child: Row(
                                 children: [
                                   Text(

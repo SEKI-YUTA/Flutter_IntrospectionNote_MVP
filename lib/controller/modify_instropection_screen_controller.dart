@@ -148,6 +148,28 @@ class CreateInstropectionScreenController extends GetxController {
     }
   }
 
+  Future<void> changeDate() async {
+    final now = DateTime.now();
+    final firstDate = now.subtract(const Duration(days: 30));
+    try {
+      final DateTime? picked = await showDatePicker(
+        locale: const Locale('ja'),
+        context: Get.context!,
+        firstDate: firstDate,
+        lastDate: now,
+        initialDate: now,
+      );
+
+      // ダイアログから戻った時点でコントローラーがまだ有効かチェック
+      if (picked != null &&
+          Get.isRegistered<CreateInstropectionScreenController>()) {
+        setDate(picked);
+      }
+    } catch (e) {
+      e.printError();
+    }
+  }
+
   Future<void> saveIntrospection() async {
     try {
       _isSaving.value = true;
