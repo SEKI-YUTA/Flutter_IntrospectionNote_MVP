@@ -35,6 +35,7 @@ class CreateIntrospectionPage
     final bool isDarkTheme = checkIsDarkTheme(context);
     final IntrospectionColor introspectionColor = getFormColorScheme(context);
     return Scaffold(
+      appBar: AppBar(title: Text(controller.isEditMode ? '内省の編集' : '内省の記録')),
       body: SafeArea(
         child: Obx(() {
           return Stack(
@@ -44,7 +45,6 @@ class CreateIntrospectionPage
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildHeader(isDarkTheme),
                     const SizedBox(height: 16),
 
                     Card(
@@ -192,33 +192,6 @@ class CreateIntrospectionPage
           );
         }),
       ),
-    );
-  }
-
-  Widget _buildHeader(bool isDarkTheme) {
-    return Row(
-      children: [
-        IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: isDarkTheme ? Colors.white : Colors.black,
-          ),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-        const SizedBox(width: 8),
-
-        Text(
-          controller.isEditMode ? '内省の編集' : '内省の記録',
-          style: const TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF0F766E),
-          ),
-        ),
-      ],
     );
   }
 
