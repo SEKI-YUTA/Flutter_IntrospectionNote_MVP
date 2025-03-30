@@ -45,6 +45,18 @@ class CreateInstropectionScreenController extends GetxController {
     _initializeData();
   }
 
+  @override
+  void onClose() {
+    for (var item in _positiveTextControllers) {
+      item.dispose();
+    }
+    for (var item in _improvementTextControllers) {
+      item.dispose();
+    }
+    dailyCommentController.dispose();
+    super.onClose();
+  }
+
   void _initializeData() {
     _positiveTextControllers.add(TextEditingController());
 
@@ -100,18 +112,6 @@ class CreateInstropectionScreenController extends GetxController {
       dailyCommentController.text =
           introspectionData['daily_comment'].toString();
     }
-  }
-
-  @override
-  void onClose() {
-    for (var item in _positiveTextControllers) {
-      item.dispose();
-    }
-    for (var item in _improvementTextControllers) {
-      item.dispose();
-    }
-    dailyCommentController.dispose();
-    super.onClose();
   }
 
   String getFormattedDate() {
