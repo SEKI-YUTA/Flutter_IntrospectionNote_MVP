@@ -129,6 +129,11 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
               onDaySelected: (selectedDay, focusedDay) {
                 controller.changeSelectedDate(selectedDay);
               },
+              headerStyle: const HeaderStyle(
+                formatButtonVisible: false,
+                titleCentered: true,
+              ),
+              locale: 'ja_JP'
             ),
           ),
           // Expandedを削除し、ListView.builderにshrinkWrapを適用
