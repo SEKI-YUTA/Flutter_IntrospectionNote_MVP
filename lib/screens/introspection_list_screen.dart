@@ -13,6 +13,7 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
   @override
   Widget build(BuildContext context) {
     final IntrospectionColor introspectionColor = getFormColorScheme(context);
+    final bool isDarkTheme = checkIsDarkTheme(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('内省ノート'),
@@ -49,7 +50,7 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
                         controller.delete(note);
                       },
                     )
-                    : Expanded(child: _buildCalendarVIew()),
+                    : Expanded(child: _buildCalendarVIew(isDarkTheme)),
               ],
             ),
           ),
@@ -115,7 +116,7 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
     );
   }
 
-  Widget _buildCalendarVIew() {
+  Widget _buildCalendarVIew(bool isDarkTheme) {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -139,6 +140,12 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
               onDaySelected: (selectedDay, focusedDay) {
                 controller.changeSelectedDate(selectedDay);
               },
+              calendarStyle: CalendarStyle(
+                markerDecoration: BoxDecoration(
+                  color: isDarkTheme ? Colors.white : Colors.black,
+                  shape: BoxShape.circle,
+                ),
+              ),
               headerStyle: const HeaderStyle(
                 formatButtonVisible: false,
                 titleCentered: true,
