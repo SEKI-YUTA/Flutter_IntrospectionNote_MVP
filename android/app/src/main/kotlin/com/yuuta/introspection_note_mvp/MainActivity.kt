@@ -1,4 +1,4 @@
-package com.example.introspection_note_mvp
+package com.yuuta.introspection_note_mvp
 
 import io.flutter.embedding.android.FlutterActivity
 
