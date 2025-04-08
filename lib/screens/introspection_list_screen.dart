@@ -24,6 +24,7 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
           ),
         ],
       ),
+      
       floatingActionButton: FloatingActionButton(
         onPressed: controller.navigateToCreateIntrospectionScreen,
         child: const Icon(Icons.add),
