@@ -99,6 +99,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Run flutter doctor
+        run: flutter doctor -v
+
       - name: Build iOS
         run: flutter build ios --no-codesign # CIではコード署名なしでビルド
 
