@@ -47,7 +47,7 @@ class NotificationUtil {
   Future<void> initNotification() async {
     final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher'); // アプリのアイコンを使用
+        AndroidInitializationSettings('@mipmap/launcher_icon'); // アプリのアイコンを使用
 
     // iOSの初期設定
     const DarwinInitializationSettings initializationSettingsIOS =
