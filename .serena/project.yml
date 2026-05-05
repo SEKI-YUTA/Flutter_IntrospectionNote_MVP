@@ -1,0 +1,5 @@
+name: introspection_note_mvp
+description: "A Flutter application for daily introspection and self-improvement."
+version: 1.0.0
+onboarding_completed: true
+memories_path: ".serena/memories"
