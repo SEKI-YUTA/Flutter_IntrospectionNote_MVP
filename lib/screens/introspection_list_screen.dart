@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:introspection_note_mvp/controller/introspection_list_screen_controller.dart';
 import 'package:introspection_note_mvp/data/models/introspection_note.dart';
 import 'package:introspection_note_mvp/data/models/modify_form_color_scheme.dart';
+import 'package:introspection_note_mvp/screens/debug_screen.dart';
 import 'package:introspection_note_mvp/util/util.dart';
 import 'package:introspection_note_mvp/widget/introspection_card.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -18,6 +20,11 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
       appBar: AppBar(
         title: const Text('内省ノート'),
         actions: [
+          if (kDebugMode)
+            IconButton(
+              onPressed: () => Get.to(() => const DebugScreen()),
+              icon: const Icon(Icons.bug_report),
+            ),
           IconButton(
             onPressed: controller.navigateToSettingsScreen,
             icon: const Icon(Icons.settings),
@@ -93,8 +100,17 @@ class IntrospectionListPage extends GetView<IntrospectionListScreenController> {
       child:
           notes.isNotEmpty
               ? ListView.builder(
-                itemCount: notes.length,
+                controller: controller.scrollController,
+                itemCount: notes.length + (controller.isMoreLoading ? 1 : 0),
                 itemBuilder: (context, index) {
+                  if (index == notes.length) {
+                    return const Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16.0),
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
                   final note = notes[index];
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 16.0),

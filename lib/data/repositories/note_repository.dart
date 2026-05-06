@@ -4,7 +4,7 @@ import 'package:introspection_note_mvp/data/models/introspection_note.dart';
 import 'package:sqflite/sqflite.dart';
 
 class NoteRepository {
-  Future<List<IntrospectionNote>> fetchNotes() async => [];
+  Future<List<IntrospectionNote>> fetchNotes({int? limit, int? offset}) async => [];
   Future<void> add(IntrospectionNote note) async {}
   Future<void> update(IntrospectionNote note) async {}
   Future<void> delete(IntrospectionNote note) async {}
@@ -17,11 +17,13 @@ class NoteRepositoryImpl extends NoteRepository {
   final DatabaseHelper dbHelper;
 
   @override
-  Future<List<IntrospectionNote>> fetchNotes() async {
+  Future<List<IntrospectionNote>> fetchNotes({int? limit, int? offset}) async {
     final db = await dbHelper.database;
     final maps = await db.query(
       DatabaseHelper.table,
       orderBy: '${DatabaseHelper.columnDate} DESC',
+      limit: limit,
+      offset: offset,
     );
 
     return List.generate(maps.length, (i) {
@@ -78,10 +80,18 @@ class NoteRepositoryImpl extends NoteRepository {
 
 class NoteRepositoryFakeImpl extends NoteRepository {
   @override
-  Future<List<IntrospectionNote>> fetchNotes() async {
+  Future<List<IntrospectionNote>> fetchNotes({int? limit, int? offset}) async {
     await Future.delayed(const Duration(seconds: 1));
     notes.sort((a, b) => b.date.compareTo(a.date));
-    return notes;
+    List<IntrospectionNote> result = notes;
+    if (offset != null) {
+      if (offset >= result.length) return [];
+      result = result.sublist(offset);
+    }
+    if (limit != null && result.length > limit) {
+      result = result.sublist(0, limit);
+    }
+    return result.toList();
   }
 
   @override

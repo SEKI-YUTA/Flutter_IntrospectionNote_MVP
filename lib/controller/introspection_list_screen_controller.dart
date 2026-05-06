@@ -10,12 +10,21 @@ class IntrospectionListScreenController extends GetxController {
   final _notes = <IntrospectionNote>[].obs;
   final _filteredNotes = <IntrospectionNote>[].obs;
   final _isLoading = true.obs;
+  final _isMoreLoading = false.obs;
+  final _hasMore = true.obs;
   final _viewMode = ViewMode.list.obs;
   final _selectedDate = DateTime.now().obs;
   final Rx<IntrospectionNote?> _manipulatingNote = Rx<IntrospectionNote?>(null);
+
+  final ScrollController scrollController = ScrollController();
+  int _currentOffset = 0;
+  static const int _pageSize = 30;
+
   List<IntrospectionNote> get notes => _notes.toList();
   List<IntrospectionNote> get filteredNotes => _filteredNotes.toList();
   bool get isLoading => _isLoading.value;
+  bool get isMoreLoading => _isMoreLoading.value;
+  bool get hasMore => _hasMore.value;
   ViewMode get viewMode => _viewMode.value;
   IntrospectionNote? get manipulatingNote => _manipulatingNote.value;
   DateTime get selectedDate => _selectedDate.value;
@@ -23,20 +32,83 @@ class IntrospectionListScreenController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    scrollController.addListener(_scrollListener);
     readNotes();
+  }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
+  }
+
+  void _scrollListener() {
+    if (!scrollController.hasClients ||
+        _viewMode.value != ViewMode.list ||
+        _isLoading.value ||
+        _isMoreLoading.value ||
+        !_hasMore.value) {
+      return;
+    }
+
+    try {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 200) {
+        loadMore();
+      }
+    } catch (e) {
+      // エラー無視
+    }
   }
 
   Future<void> readNotes() async {
     _isLoading.value = true;
+    _isMoreLoading.value = false;
+    _currentOffset = 0;
+    _hasMore.value = true;
     try {
-      final notes = await repository.fetchNotes();
-      _notes.clear();
-      _notes.addAll(notes);
+      final notes = await repository.fetchNotes(
+        limit: _pageSize,
+        offset: _currentOffset,
+      );
+      _notes.assignAll(notes);
+      _currentOffset += notes.length;
+      if (notes.length < _pageSize) {
+        _hasMore.value = false;
+      }
       filterNotesByDate(_selectedDate.value);
     } catch (e) {
       e.printError();
     } finally {
       _isLoading.value = false;
+      update();
+    }
+  }
+
+  Future<void> loadMore() async {
+    if (_isMoreLoading.value || !_hasMore.value) return;
+
+    _isMoreLoading.value = true;
+    update();
+    try {
+      final notes = await repository.fetchNotes(
+        limit: _pageSize,
+        offset: _currentOffset,
+      );
+      if (notes.isEmpty) {
+        _hasMore.value = false;
+      } else {
+        _notes.addAll(notes);
+        _currentOffset += notes.length;
+        if (notes.length < _pageSize) {
+          _hasMore.value = false;
+        }
+      }
+      filterNotesByDate(_selectedDate.value);
+    } catch (e) {
+      e.printError();
+    } finally {
+      _isMoreLoading.value = false;
       update();
     }
   }
